@@ -3,7 +3,6 @@ package supercharger
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"regexp"
@@ -13,73 +12,46 @@ const chargersURL = "https://www.tesla.com/findus"
 
 var ErrNoSuperchargersFound = errors.New("No superchargers found")
 
-type Phone struct {
-	Label  string
-	Number string
+type Supercharger struct {
+	Address                string       `db:"address" json:"address"` // not null
+	AddressLine1           *string      `db:"address_line_1" json:"address_line_1"`
+	AddressLine2           *string      `db:"address_line_2" json:"address_line_2"`
+	AddressNotes           *string      `db:"address_notes" json:"address_notes,omitempty"`
+	Amenities              *string      `db:"amentities" json:"amentities,omitempty"`
+	BaiduLat               *float64     `db:"baidu_lat" json:"baidu_lat,string"`
+	BaiduLng               *float64     `db:"baidu_lng" json:"baidu_lng,string"`
+	Chargers               *string      `db:"chargers" json:"chargers,omitempty"`
+	City                   string       `db:"city" json:"city"` // not null
+	CommonName             string       `db:"common_name" json:"common_name"`
+	Country                string       `db:"country" json:"country"` // not null
+	DestinationChargerLogo *string      `db:"destination_charger_logo" json:"destination_charger_logo,omitempty"`
+	DestinationWebsite     *string      `db:"destination_website" json:"destination_website,omitempty"`
+	DirectionsLink         *string      `db:"directions_link" json:"directions_link,omitempty"`
+	Emails                 EmailList    `db:"emails" json:"emails,omitempty"`
+	Geocode                string       `db:"geocode" json:"geocode"` // not null
+	Hours                  *string      `db:"hours" json:"hours,omitempty"`
+	IsGallery              JSONBool     `db:"is_gallery" json:"is_gallery"` // not null
+	KioskPinX              *int64       `db:"kiosk_pin_x" json:"kiosk_pin_x,string,omitempty"`
+	KioskPinY              *int64       `db:"kiosk_pin_y" json:"kiosk_pin_y,string,omitempty"`
+	KioskZoomPinX          *int64       `db:"kiosk_zoom_pin_x" json:"kiosk_zoom_pin_x,string,omitempty"`
+	KioskZoomPinY          *int64       `db:"kiosk_zoom_pin_y" json:"kiosk_zoom_pin_y,string,omitempty"`
+	Latitude               float64      `db:"latitude" json:"latitude,string"`
+	Longitude              float64      `db:"longitude" json:"longitude,string"`
+	LocationID             string       `db:"location_id" json:"location_id"`     // not null
+	LocationType           LocationList `db:"location_type" json:"location_type"` // not null
+	Nid                    int64        `db:"nid" json:"nid,string"`              // not null
+	OpenSoon               JSONBool     `db:"open_soon" json:"open_soon"`         // not null
+	Path                   string       `db:"path" json:"path"`                   // not null
+	PostalCode             *string      `db:"postal_code" json:"postal_code,omitempty"`
+	ProvinceState          *string      `db:"province_state" json:"province_state,omitempty"`
+	Region                 string       `db:"region" json:"region,omitempty"` // not null
+	SalesPhone             PhoneList    `db:"sales_phone" json:"sales_phone,omitempty"`
+	SalesRepresentative    JSONBool     `db:"sales_representative" json:"sales_representative,omitempty"`
+	SubRegion              *string      `db:"sub_region" json:"sub_region,omitempty"`
+	Title                  string       `db:"title" json:"title"` // not null
 }
 
-type Email struct {
-	Label string
-	Email string
-}
-
-type Location struct {
-	Address                string   `json:"address"` // not null
-	AddressLine1           string   `json:"address_line_1"`
-	AddressLine2           string   `json:"address_line_2"`
-	AddressNotes           string   `json:"address_notes,omitempty"`
-	Amenities              string   `json:"amentities,omitempty"`
-	BaiduLat               float64  `json:"baidu_lat,string"`
-	BaiduLng               float64  `json:"baidu_lng,string"`
-	Chargers               string   `json:"chargers,omitempty"`
-	City                   string   `json:"city"` // not null
-	CommonName             string   `json:"common_name"`
-	Country                string   `json:"country"` // not null
-	DestinationChargerLogo string   `json:"destination_charger_logo,omitempty"`
-	DestinationWebsite     string   `json:"destination_website,omitempty"`
-	DirectionsLink         string   `json:"directions_link,omitempty"`
-	Emails                 []Email  `json:"emails,omitempty"`
-	Geocode                string   `json:"geocode"` // not null
-	Hours                  string   `json:"hours,omitempty"`
-	IsGallery              JSONBool `json:"is_gallery"` // not null
-	KioskPinX              int64    `json:"kiosk_pin_x,string,omitempty"`
-	KioskPinY              int64    `json:"kiosk_pin_y,string,omitempty"`
-	KioskZoomPinX          int64    `json:"kiosk_zoom_pin_x,string,omitempty"`
-	KioskZoomPinY          int64    `json:"kiosk_zoom_pin_y,string,omitempty"`
-	Latitude               float64  `json:"latitude,string"`
-	Longitude              float64  `json:"longitude,string"`
-	LocationID             string   `json:"location_id"`   // not null
-	LocationType           []string `json:"location_type"` // not null
-	Nid                    int64    `json:"nid,string"`    // not null
-	OpenSoon               JSONBool `json:"open_soon"`     // not null
-	Path                   string   `json:"path"`          // not null
-	PostalCode             string   `json:"postal_code,omitempty"`
-	ProvinceState          string   `json:"province_state,omitempty"`
-	Region                 string   `json:"region,omitempty"` // not null
-	SalesPhone             []Phone  `json:"sales_phone,omitempty"`
-	SalesRepresentative    JSONBool `json:"sales_representative,omitempty"`
-	SubRegion              string   `json:"sub_region,omitempty"`
-	Title                  string   `json:"title"` // not null
-}
-
-type JSONBool bool
-
-func (b *JSONBool) UnmarshalJSON(data []byte) error {
-	s := string(data)
-
-	switch s {
-	case "1", "\"1\"", "true":
-		*b = true
-	case "0", "\"0\"", "false":
-		*b = false
-	default:
-		return errors.New(fmt.Sprintf("Boolean unmarshal error: invalid input %s", s))
-	}
-
-	return nil
-}
-
-func Superchargers() (locations []Location, err error) {
+func Superchargers() ([]Supercharger, error) {
 	resp, err := http.Get(chargersURL)
 	if err != nil {
 		return nil, err
@@ -106,10 +78,11 @@ func Superchargers() (locations []Location, err error) {
 		return nil, ErrNoSuperchargersFound
 	}
 
-	err = json.Unmarshal([]byte(output[1]), &locations)
+	var superchargers []Supercharger
+	err = json.Unmarshal([]byte(output[1]), &superchargers)
 	if err != nil {
 		return nil, err
 	}
 
-	return locations, nil
+	return superchargers, nil
 }
