@@ -2,9 +2,11 @@ package web
 
 import (
 	"errors"
+	"strconv"
 
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/relay"
+	"github.com/wattapp/superchargers/pkg/location"
 	"github.com/wattapp/superchargers/pkg/supercharger"
 	"golang.org/x/net/context"
 )
@@ -43,15 +45,16 @@ func BuildSchema() (graphql.Schema, error) {
 
 			switch resolvedID.Type {
 			case "Location":
-				// tripID, _ := strconv.ParseInt(resolvedID.ID, 10, 64)
-				// return vehicle.GetTrip(tripID)
-				return nil, errors.New("Not implemented")
+				locationID, _ := strconv.ParseInt(resolvedID.ID, 10, 64)
+				return location.GetLocation(locationID)
 			default:
 				return nil, errors.New("Unknown node type")
 			}
 		},
 		TypeResolve: func(p graphql.ResolveTypeParams) *graphql.Object {
 			switch p.Value.(type) {
+			case *location.Location:
+				return locationType
 			default:
 				return locationType
 			}
@@ -106,253 +109,293 @@ func BuildSchema() (graphql.Schema, error) {
 			"address": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.Address, nil
+					l := p.Source.(*location.Location)
+					return l.Address, nil
 				},
 			},
 			"addressLine1": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.AddressLine1, nil
+					l := p.Source.(*location.Location)
+					raw := *l.AddressLine1
+					if raw == "" {
+						return nil, nil
+					}
+					return raw, nil
 				},
 			},
 			"addressLine2": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.AddressLine2, nil
+					l := p.Source.(*location.Location)
+					raw := *l.AddressLine2
+					if raw == "" {
+						return nil, nil
+					}
+					return raw, nil
 				},
 			},
 			"addressNotes": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.AddressNotes, nil
+					l := p.Source.(*location.Location)
+					raw := *l.AddressNotes
+					if raw == "" {
+						return nil, nil
+					}
+					return raw, nil
 				},
 			},
 			"amentities": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.Amenities, nil
+					l := p.Source.(*location.Location)
+					return l.Amenities, nil
 				},
 			},
 			"baiduLat": &graphql.Field{
 				Type: graphql.Float,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.BaiduLat, nil
+					l := p.Source.(*location.Location)
+					return l.BaiduLat, nil
 				},
 			},
 			"baiduLng": &graphql.Field{
 				Type: graphql.Float,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.BaiduLng, nil
+					l := p.Source.(*location.Location)
+					return l.BaiduLng, nil
 				},
 			},
 			"chargers": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.Chargers, nil
+					l := p.Source.(*location.Location)
+					raw := *l.Chargers
+					if raw == "" {
+						return nil, nil
+					}
+					return raw, nil
 				},
 			},
 			"city": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.City, nil
+					l := p.Source.(*location.Location)
+					return l.City, nil
 				},
 			},
 			"commonName": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.CommonName, nil
+					l := p.Source.(*location.Location)
+					return l.CommonName, nil
 				},
 			},
 			"country": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.Country, nil
+					l := p.Source.(*location.Location)
+					return l.Country, nil
 				},
 			},
 			"destinationChargerLogo": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.DestinationChargerLogo, nil
+					l := p.Source.(*location.Location)
+					raw := *l.DestinationChargerLogo
+					if raw == "" {
+						return nil, nil
+					}
+					return raw, nil
 				},
 			},
 			"destinationWebsite": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.DestinationWebsite, nil
+					l := p.Source.(*location.Location)
+					raw := *l.DestinationWebsite
+					if raw == "" {
+						return nil, nil
+					}
+					return raw, nil
 				},
 			},
 			"directionsLink": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.DirectionsLink, nil
+					l := p.Source.(*location.Location)
+					return l.DirectionsLink, nil
 				},
 			},
 			"emails": &graphql.Field{
 				Type: graphql.NewList(emailType),
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.Emails, nil
+					l := p.Source.(*location.Location)
+					return l.Emails, nil
 				},
 			},
 			"geocode": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.Geocode, nil
+					l := p.Source.(*location.Location)
+					return l.Geocode, nil
 				},
 			},
 			"hours": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.Hours, nil
+					l := p.Source.(*location.Location)
+					raw := *l.Hours
+					if raw == "" {
+						return nil, nil
+					}
+					return raw, nil
 				},
 			},
 			"isGallery": &graphql.Field{
 				Type: graphql.Boolean,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.IsGallery, nil
+					l := p.Source.(*location.Location)
+					return l.IsGallery, nil
 				},
 			},
 			"kioskPinX": &graphql.Field{
 				Type: graphql.Int,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.KioskPinX, nil
+					l := p.Source.(*location.Location)
+					return l.KioskPinX, nil
 				},
 			},
 			"kioskPinY": &graphql.Field{
 				Type: graphql.Int,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.KioskPinY, nil
+					l := p.Source.(*location.Location)
+					return l.KioskPinY, nil
 				},
 			},
 			"kioskZoomPinX": &graphql.Field{
 				Type: graphql.Int,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.KioskZoomPinX, nil
+					l := p.Source.(*location.Location)
+					return l.KioskZoomPinX, nil
 				},
 			},
 			"kioskZoomPinY": &graphql.Field{
 				Type: graphql.Int,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.KioskZoomPinY, nil
+					l := p.Source.(*location.Location)
+					return l.KioskZoomPinY, nil
 				},
 			},
 			"latitude": &graphql.Field{
 				Type: graphql.Float,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.Latitude, nil
+					l := p.Source.(*location.Location)
+					return l.Latitude, nil
 				},
 			},
 			"longitude": &graphql.Field{
 				Type: graphql.Float,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.Longitude, nil
+					l := p.Source.(*location.Location)
+					return l.Longitude, nil
 				},
 			},
 			"locationId": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.LocationID, nil
+					l := p.Source.(*location.Location)
+					return l.LocationID, nil
 				},
 			},
 			"locationType": &graphql.Field{
 				Type: graphql.NewList(graphql.String),
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.LocationType, nil
+					l := p.Source.(*location.Location)
+					return l.LocationType, nil
 				},
 			},
 			"nid": &graphql.Field{
 				Type: graphql.Int,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.Nid, nil
+					l := p.Source.(*location.Location)
+					return l.Nid, nil
 				},
 			},
 			"openSoon": &graphql.Field{
 				Type: graphql.Boolean,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.OpenSoon, nil
+					l := p.Source.(*location.Location)
+					return l.OpenSoon, nil
 				},
 			},
 			"path": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.Path, nil
+					l := p.Source.(*location.Location)
+					return l.Path, nil
 				},
 			},
 			"postalCode": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.PostalCode, nil
+					l := p.Source.(*location.Location)
+					raw := *l.PostalCode
+					if raw == "" {
+						return nil, nil
+					}
+					return raw, nil
 				},
 			},
 			"provinceState": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.ProvinceState, nil
+					l := p.Source.(*location.Location)
+					raw := *l.ProvinceState
+					if raw == "" {
+						return nil, nil
+					}
+					return raw, nil
 				},
 			},
 			"region": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.Region, nil
+					l := p.Source.(*location.Location)
+					return l.Region, nil
 				},
 			},
 			"salesPhone": &graphql.Field{
 				Type: graphql.NewList(phoneType),
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.SalesPhone, nil
+					l := p.Source.(*location.Location)
+					return l.SalesPhone, nil
 				},
 			},
 			"salesRepresentative": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.SalesRepresentative, nil
+					l := p.Source.(*location.Location)
+					return l.SalesRepresentative, nil
 				},
 			},
 			"subRegion": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.SubRegion, nil
+					l := p.Source.(*location.Location)
+					raw := *l.SubRegion
+					if raw == "" {
+						return nil, nil
+					}
+					return raw, nil
 				},
 			},
 			"title": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					v := p.Source.(supercharger.Location)
-					return v.Title, nil
+					l := p.Source.(*location.Location)
+					return l.Title, nil
 				},
 			},
 		},
@@ -373,19 +416,19 @@ func BuildSchema() (graphql.Schema, error) {
 				Type: locationsConnectionDefinition.ConnectionType,
 				Args: typeArgs,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					superchargers, err := supercharger.Superchargers()
+					locations, err := location.Locations()
 					if err != nil {
 						return nil, err
 					}
 
 					args := relay.NewConnectionArguments(p.Args)
 
-					locations := []interface{}{}
-					for _, location := range superchargers {
-						locations = append(locations, location)
+					l := []interface{}{}
+					for _, location := range locations {
+						l = append(l, location)
 					}
 
-					return relay.ConnectionFromArray(locations, args), nil
+					return relay.ConnectionFromArray(l, args), nil
 				},
 			},
 			"node": nodeDefinitions.NodeField,
