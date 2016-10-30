@@ -2,6 +2,7 @@ package web
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/graphql-go/graphql"
@@ -36,5 +37,8 @@ func Run() {
 	// Run the server
 	addr := fmt.Sprintf(":%s", os.Getenv("PORT"))
 
-	e.Run(standard.New(addr))
+	err = e.Run(standard.New(addr))
+	if err != nil {
+		log.Fatal(err)
+	}
 }
