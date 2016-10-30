@@ -1,0 +1,4 @@
+#!/bin/bash
+set -e
+
+cat testdata/superchargers.json | jq "[.[].$1] | unique | sort"
