@@ -2,7 +2,6 @@ package web
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/graphql-go/graphql"
@@ -14,11 +13,11 @@ import (
 
 var Schema graphql.Schema
 
-func Run() {
+func Run() error {
 	var err error
 	Schema, err = BuildSchema()
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	e := echo.New()
@@ -38,7 +37,5 @@ func Run() {
 	addr := fmt.Sprintf(":%s", os.Getenv("PORT"))
 
 	err = e.Run(standard.New(addr))
-	if err != nil {
-		log.Fatal(err)
-	}
+	return err
 }
