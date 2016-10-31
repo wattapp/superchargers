@@ -158,14 +158,20 @@ func BuildSchema() (graphql.Schema, error) {
 				Type: graphql.Float,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					return *l.BaiduLat, nil
+					if l.BaiduGeo == nil {
+						return nil, nil
+					}
+					return l.BaiduGeo.Lat, nil
 				},
 			},
 			"baiduLng": &graphql.Field{
 				Type: graphql.Float,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					return *l.BaiduLng, nil
+					if l.BaiduGeo == nil {
+						return nil, nil
+					}
+					return l.BaiduGeo.Lng, nil
 				},
 			},
 			"chargers": &graphql.Field{
@@ -292,14 +298,14 @@ func BuildSchema() (graphql.Schema, error) {
 				Type: graphql.Float,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					return l.Latitude, nil
+					return l.Geo.Lat, nil
 				},
 			},
 			"longitude": &graphql.Field{
 				Type: graphql.Float,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					return l.Longitude, nil
+					return l.Geo.Lng, nil
 				},
 			},
 			"locationId": &graphql.Field{

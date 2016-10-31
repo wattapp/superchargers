@@ -6,6 +6,18 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestSuperchargerEquality(t *testing.T) {
+	a := Supercharger{
+		Address: "1234",
+	}
+
+	b := Supercharger{
+		Address: "1234",
+	}
+
+	assert.True(t, a.Equal(b))
+}
+
 func TestSuperchargerEqualityAddress(t *testing.T) {
 	a := Supercharger{
 		Address: "1234",
@@ -15,7 +27,7 @@ func TestSuperchargerEqualityAddress(t *testing.T) {
 		Address: "1235",
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityAddressLine1(t *testing.T) {
@@ -29,7 +41,7 @@ func TestSuperchargerEqualityAddressLine1(t *testing.T) {
 		AddressLine1: &pointerb,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityAddressLine2(t *testing.T) {
@@ -43,7 +55,7 @@ func TestSuperchargerEqualityAddressLine2(t *testing.T) {
 		AddressLine2: &pointerb,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityAddressNotes(t *testing.T) {
@@ -57,7 +69,7 @@ func TestSuperchargerEqualityAddressNotes(t *testing.T) {
 		AddressNotes: &pointerb,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityAmenities(t *testing.T) {
@@ -71,7 +83,7 @@ func TestSuperchargerEqualityAmenities(t *testing.T) {
 		Amenities: &pointerb,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityBaiduLat(t *testing.T) {
@@ -85,7 +97,7 @@ func TestSuperchargerEqualityBaiduLat(t *testing.T) {
 		BaiduLat: &pointerb,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityBaiduLng(t *testing.T) {
@@ -99,7 +111,7 @@ func TestSuperchargerEqualityBaiduLng(t *testing.T) {
 		BaiduLng: &pointerb,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityChargers(t *testing.T) {
@@ -113,7 +125,7 @@ func TestSuperchargerEqualityChargers(t *testing.T) {
 		Chargers: &pointerb,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityCity(t *testing.T) {
@@ -125,7 +137,7 @@ func TestSuperchargerEqualityCity(t *testing.T) {
 		City: "1235",
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityCommonName(t *testing.T) {
@@ -137,7 +149,7 @@ func TestSuperchargerEqualityCommonName(t *testing.T) {
 		CommonName: "1235",
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityCountry(t *testing.T) {
@@ -149,7 +161,7 @@ func TestSuperchargerEqualityCountry(t *testing.T) {
 		Country: "1235",
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityDestinationChargerLogo(t *testing.T) {
@@ -163,7 +175,7 @@ func TestSuperchargerEqualityDestinationChargerLogo(t *testing.T) {
 		DestinationChargerLogo: &pointerb,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityDestinationWebsite(t *testing.T) {
@@ -177,7 +189,7 @@ func TestSuperchargerEqualityDestinationWebsite(t *testing.T) {
 		DestinationWebsite: &pointerb,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityDirectionsLink(t *testing.T) {
@@ -191,7 +203,7 @@ func TestSuperchargerEqualityDirectionsLink(t *testing.T) {
 		DirectionsLink: &pointerb,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityEmails(t *testing.T) {
@@ -211,7 +223,7 @@ func TestSuperchargerEqualityEmails(t *testing.T) {
 		Emails: emails,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityGeocode(t *testing.T) {
@@ -223,7 +235,7 @@ func TestSuperchargerEqualityGeocode(t *testing.T) {
 		Geocode: "1235",
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityHours(t *testing.T) {
@@ -237,7 +249,7 @@ func TestSuperchargerEqualityHours(t *testing.T) {
 		Hours: &pointerb,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityIsGallery(t *testing.T) {
@@ -249,7 +261,7 @@ func TestSuperchargerEqualityIsGallery(t *testing.T) {
 		IsGallery: false,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityKioskPinX(t *testing.T) {
@@ -263,7 +275,7 @@ func TestSuperchargerEqualityKioskPinX(t *testing.T) {
 		KioskPinX: &pointerb,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityKioskPinY(t *testing.T) {
@@ -277,7 +289,7 @@ func TestSuperchargerEqualityKioskPinY(t *testing.T) {
 		KioskPinY: &pointerb,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityKioskZoomPinX(t *testing.T) {
@@ -291,7 +303,7 @@ func TestSuperchargerEqualityKioskZoomPinX(t *testing.T) {
 		KioskZoomPinX: &pointerb,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityKioskZoomPinY(t *testing.T) {
@@ -305,7 +317,7 @@ func TestSuperchargerEqualityKioskZoomPinY(t *testing.T) {
 		KioskZoomPinY: &pointerb,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityLatitude(t *testing.T) {
@@ -317,7 +329,7 @@ func TestSuperchargerEqualityLatitude(t *testing.T) {
 		Latitude: 0.1,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityLongitude(t *testing.T) {
@@ -329,7 +341,7 @@ func TestSuperchargerEqualityLongitude(t *testing.T) {
 		Longitude: 0.1,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityLocationID(t *testing.T) {
@@ -341,7 +353,7 @@ func TestSuperchargerEqualityLocationID(t *testing.T) {
 		LocationID: "1235",
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityLocationType(t *testing.T) {
@@ -355,10 +367,16 @@ func TestSuperchargerEqualityLocationType(t *testing.T) {
 		LocationType: list,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityNid(t *testing.T) {
+	defer func() {
+		if err := recover(); err == nil {
+			assert.Fail(t, "Did not panic")
+		}
+	}()
+
 	a := Supercharger{
 		Nid: 1234,
 	}
@@ -367,7 +385,7 @@ func TestSuperchargerEqualityNid(t *testing.T) {
 		Nid: 1235,
 	}
 
-	assert.NotEqual(t, a, b)
+	a.Equal(b)
 }
 
 func TestSuperchargerEqualityOpenSoon(t *testing.T) {
@@ -379,7 +397,7 @@ func TestSuperchargerEqualityOpenSoon(t *testing.T) {
 		OpenSoon: false,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityPath(t *testing.T) {
@@ -391,7 +409,7 @@ func TestSuperchargerEqualityPath(t *testing.T) {
 		Path: "1235",
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityPostalCode(t *testing.T) {
@@ -405,7 +423,7 @@ func TestSuperchargerEqualityPostalCode(t *testing.T) {
 		PostalCode: &pointerb,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityProvinceState(t *testing.T) {
@@ -419,7 +437,7 @@ func TestSuperchargerEqualityProvinceState(t *testing.T) {
 		ProvinceState: &pointerb,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityRegion(t *testing.T) {
@@ -431,7 +449,7 @@ func TestSuperchargerEqualityRegion(t *testing.T) {
 		Region: "1235",
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualitySalesPhone(t *testing.T) {
@@ -451,7 +469,7 @@ func TestSuperchargerEqualitySalesPhone(t *testing.T) {
 		SalesPhone: list,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualitySalesRepresentative(t *testing.T) {
@@ -463,7 +481,7 @@ func TestSuperchargerEqualitySalesRepresentative(t *testing.T) {
 		SalesRepresentative: false,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualitySubRegion(t *testing.T) {
@@ -477,7 +495,7 @@ func TestSuperchargerEqualitySubRegion(t *testing.T) {
 		SubRegion: &pointerb,
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
 
 func TestSuperchargerEqualityTitle(t *testing.T) {
@@ -489,5 +507,5 @@ func TestSuperchargerEqualityTitle(t *testing.T) {
 		Title: "1235",
 	}
 
-	assert.NotEqual(t, a, b)
+	assert.False(t, a.Equal(b))
 }
