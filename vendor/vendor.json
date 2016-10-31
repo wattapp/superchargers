@@ -1,6 +1,13 @@
 {
 	"comment": "",
 	"ignore": "test",
+	"heroku": {
+		"goVersion": "go1.7",
+		"install": [
+			".",
+			"github.com/dewski/goose/cmd/goose"
+		]
+	},
 	"package": [
 		{
 			"checksumSHA1": "SPQcWDUN+wcTThipcR9EzX4t3E8=",
