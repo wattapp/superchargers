@@ -3,6 +3,7 @@ package supercharger
 import (
 	"testing"
 
+	"github.com/dewski/spatial"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -86,29 +87,19 @@ func TestSuperchargerEqualityAmenities(t *testing.T) {
 	assert.False(t, a.Equal(b))
 }
 
-func TestSuperchargerEqualityBaiduLat(t *testing.T) {
-	pointer := 0.0
+func TestSuperchargerEqualityBaiduGeo(t *testing.T) {
 	a := Supercharger{
-		BaiduLat: &pointer,
+		BaiduGeo: &spatial.Point{
+			Lat: 0.0,
+			Lng: 0.0,
+		},
 	}
 
-	pointerb := 0.1
 	b := Supercharger{
-		BaiduLat: &pointerb,
-	}
-
-	assert.False(t, a.Equal(b))
-}
-
-func TestSuperchargerEqualityBaiduLng(t *testing.T) {
-	pointer := 0.0
-	a := Supercharger{
-		BaiduLng: &pointer,
-	}
-
-	pointerb := 0.1
-	b := Supercharger{
-		BaiduLng: &pointerb,
+		BaiduGeo: &spatial.Point{
+			Lat: 0.0,
+			Lng: 0.1,
+		},
 	}
 
 	assert.False(t, a.Equal(b))
@@ -320,25 +311,19 @@ func TestSuperchargerEqualityKioskZoomPinY(t *testing.T) {
 	assert.False(t, a.Equal(b))
 }
 
-func TestSuperchargerEqualityLatitude(t *testing.T) {
+func TestSuperchargerEqualityGeo(t *testing.T) {
 	a := Supercharger{
-		Latitude: 0.0,
+		Geo: spatial.Point{
+			Lat: 0.0,
+			Lng: 0.0,
+		},
 	}
 
 	b := Supercharger{
-		Latitude: 0.1,
-	}
-
-	assert.False(t, a.Equal(b))
-}
-
-func TestSuperchargerEqualityLongitude(t *testing.T) {
-	a := Supercharger{
-		Longitude: 0.0,
-	}
-
-	b := Supercharger{
-		Longitude: 0.1,
+		Geo: spatial.Point{
+			Lat: 0.1,
+			Lng: 0.0,
+		},
 	}
 
 	assert.False(t, a.Equal(b))
