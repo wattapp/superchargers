@@ -20,12 +20,12 @@ func (ll LocationList) Value() (driver.Value, error) {
 func (ll *LocationList) Scan(src interface{}) error {
 	asBytes, ok := src.([]byte)
 	if !ok {
-		return error(errors.New("Scan source was not []bytes"))
+		return errors.New("Scan source was not []bytes")
 	}
 
 	err := json.Unmarshal(asBytes, &ll)
 	if err != nil {
-		return error(errors.New("Scan could not unmarshal to []string"))
+		return errors.New("Scan could not unmarshal to []string")
 	}
 
 	return nil
@@ -44,12 +44,12 @@ func (pl PhoneList) Value() (driver.Value, error) {
 func (pl *PhoneList) Scan(src interface{}) error {
 	asBytes, ok := src.([]byte)
 	if !ok {
-		return error(errors.New("Scan source was not []bytes"))
+		return errors.New("Scan source was not []bytes")
 	}
 
 	err := json.Unmarshal(asBytes, &pl)
 	if err != nil {
-		return error(errors.New("Scan could not unmarshal to []Phone"))
+		return errors.New("Scan could not unmarshal to []Phone")
 	}
 
 	return nil
@@ -81,12 +81,12 @@ func (el EmailList) Value() (driver.Value, error) {
 func (el *EmailList) Scan(src interface{}) error {
 	asBytes, ok := src.([]byte)
 	if !ok {
-		return error(errors.New("Scan source was not []bytes"))
+		return errors.New("Scan source was not []bytes")
 	}
 
 	err := json.Unmarshal(asBytes, &el)
 	if err != nil {
-		return error(errors.New("Scan could not unmarshal to []Email"))
+		return errors.New("Scan could not unmarshal to []Email")
 	}
 
 	return nil
