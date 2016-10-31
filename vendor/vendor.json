@@ -1,6 +1,5 @@
 {
 	"comment": "",
-	"ignore": "test",
 	"heroku": {
 		"goVersion": "go1.7",
 		"install": [
@@ -8,6 +7,7 @@
 			"github.com/dewski/goose/cmd/goose"
 		]
 	},
+	"ignore": "test",
 	"package": [
 		{
 			"checksumSHA1": "SPQcWDUN+wcTThipcR9EzX4t3E8=",
@@ -21,6 +21,12 @@
 			"path": "github.com/davecgh/go-spew/spew",
 			"revision": "976c720a22c8eb4eb6a0b4348ad85ad12491a506",
 			"revisionTime": "2016-09-25T22:06:09Z"
+		},
+		{
+			"checksumSHA1": "EAOwYKgacRuyA861ljBPw3bCbHw=",
+			"path": "github.com/dewski/goose/cmd/goose",
+			"revision": "b1f3dc4e6bf156729473444ca47850d4b1186539",
+			"revisionTime": "2016-10-21T08:17:21Z"
 		},
 		{
 			"checksumSHA1": "W1KqoLpqFGHNXAZCafEJ9DfOSfA=",
