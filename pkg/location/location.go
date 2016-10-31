@@ -45,13 +45,19 @@ func GetLocation(locationID int64) (*Location, error) {
 	return location, nil
 }
 
-func Locations() ([]*Location, error) {
+func Locations(scope database.GraphQLScope) ([]*Location, error) {
 	locations := []*Location{}
-	err := database.Conn().
+	builder := database.Conn().
 		Select("*").
-		From("locations").
-		QueryStructs(&locations)
+		From("locations")
 
+	scope.OrderBy = database.OrderOnCreatedAt
+	query, err := database.ApplyGraphQLScope(builder, scope)
+	if err != nil {
+		return nil, err
+	}
+
+	err = query.QueryStructs(&locations)
 	if err != nil {
 		return nil, err
 	}

@@ -6,6 +6,7 @@ import (
 
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/relay"
+	"github.com/wattapp/superchargers/pkg/database"
 	"github.com/wattapp/superchargers/pkg/location"
 	"github.com/wattapp/superchargers/pkg/supercharger"
 	"golang.org/x/net/context"
@@ -416,19 +417,18 @@ func BuildSchema() (graphql.Schema, error) {
 				Type: locationsConnectionDefinition.ConnectionType,
 				Args: typeArgs,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					locations, err := location.Locations()
+					scope := database.NewGraphQLScopeWithFilters(p.Args)
+					data := []database.GraphQLCursor{}
+					locations, err := location.Locations(scope)
 					if err != nil {
 						return nil, err
 					}
 
-					args := relay.NewConnectionArguments(p.Args)
-
-					l := []interface{}{}
-					for _, location := range locations {
-						l = append(l, location)
+					for _, l := range locations {
+						data = append(data, l)
 					}
 
-					return relay.ConnectionFromArray(l, args), nil
+					return database.GraphQLConnection(data, scope), nil
 				},
 			},
 			"node": nodeDefinitions.NodeField,
