@@ -29,6 +29,12 @@
 			"revisionTime": "2016-10-21T08:17:21Z"
 		},
 		{
+			"checksumSHA1": "QaP/FT2CBlVMgKzv6aagK21SDsk=",
+			"path": "github.com/dewski/goose/lib/goose",
+			"revision": "b1f3dc4e6bf156729473444ca47850d4b1186539",
+			"revisionTime": "2016-10-21T08:17:21Z"
+		},
+		{
 			"checksumSHA1": "W1KqoLpqFGHNXAZCafEJ9DfOSfA=",
 			"path": "github.com/dewski/spatial",
 			"revision": "879d617d0f3381fc0782d432b11cae739c616e2f",
