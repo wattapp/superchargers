@@ -4,4 +4,4 @@ set -e
 # Load the environment variables needed for testing
 export $(cat .env | grep -v ^# | xargs)
 
-go run cmd/sync.go
+go run sync/sync.go

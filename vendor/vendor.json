@@ -4,7 +4,8 @@
 		"goVersion": "go1.7",
 		"install": [
 			".",
-			"github.com/dewski/goose/cmd/goose"
+			"github.com/dewski/goose/cmd/goose",
+			"github.com/wattapp/superchargers/sync"
 		]
 	},
 	"ignore": "test",
