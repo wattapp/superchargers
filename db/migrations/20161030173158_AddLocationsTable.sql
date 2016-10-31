@@ -17,7 +17,7 @@ CREATE TABLE locations (
   destination_charger_logo text null,
   destination_website text null,
   directions_link text null,
-  emails json null, -- array
+  emails jsonb null, -- array
   geocode varchar(100) not null,
   hours text null,
   is_gallery bool not null default false,
@@ -27,14 +27,14 @@ CREATE TABLE locations (
   kiosk_zoom_pin_y integer null,
   geo geometry(Geometry, 4326) not null,
   location_id varchar(255) not null,
-  location_type json not null, -- array
+  location_type jsonb not null, -- array
   nid integer not null unique,
   open_soon bool not null default false,
   path varchar(100) not null,
   postal_code varchar(50) null,
   province_state varchar(100) null,
   region varchar(100) not null,
-  sales_phone json null, --array
+  sales_phone jsonb null, --array
   sales_representative bool not null default false,
   sub_region varchar(100) null,
   title varchar(255) not null,
