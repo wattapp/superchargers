@@ -9,8 +9,7 @@ CREATE TABLE locations (
   address_line_2 text null,
   address_notes text null,
   amentities text null,
-  baidu_lat real null,
-  baidu_lng real null,
+  baidu_geo geometry(Geometry, 4326) null,
   chargers text null,
   city varchar(100) not null,
   common_name text null,
@@ -26,8 +25,7 @@ CREATE TABLE locations (
   kiosk_pin_y integer null,
   kiosk_zoom_pin_x integer null,
   kiosk_zoom_pin_y integer null,
-  latitude real not null,
-  longitude real not null,
+  geo geometry(Geometry, 4326) not null,
   location_id varchar(255) not null,
   location_type json not null, -- array
   nid integer not null unique,
@@ -43,6 +41,9 @@ CREATE TABLE locations (
   updated_at timestamp(3) not null,
   created_at timestamp(3) not null
 );
+
+CREATE INDEX index_locations_on_geo ON locations USING GIST(geo);
+CREATE INDEX index_locations_on_baidu_geo ON locations USING GIST(baidu_geo);
 
 -- +goose Down
 -- SQL section 'Down' is executed when this migration is rolled back
