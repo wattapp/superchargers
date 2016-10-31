@@ -24,10 +24,16 @@ var enumLocationType = graphql.NewEnum(graphql.EnumConfig{
 	Name: "LocationType",
 	Values: graphql.EnumValueConfigMap{
 		"SUPERCHARGER": &graphql.EnumValueConfig{
-			Value: "SUPERCHARGER",
+			Value: "supercharger",
 		},
-		"DESTINATION": &graphql.EnumValueConfig{
-			Value: "DESTINATION",
+		"STANDARD_CHARGER": &graphql.EnumValueConfig{
+			Value: "standard charger",
+		},
+		"STORE": &graphql.EnumValueConfig{
+			Value: "store",
+		},
+		"SERVICE": &graphql.EnumValueConfig{
+			Value: "service",
 		},
 	},
 })
@@ -420,8 +426,15 @@ func BuildSchema() (graphql.Schema, error) {
 				Args: typeArgs,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					scope := database.NewGraphQLScopeWithFilters(p.Args)
+					var types []string
+					if p.Args["type"] != nil {
+						for _, t := range p.Args["type"].([]interface{}) {
+							types = append(types, t.(string))
+						}
+					}
+
 					data := []database.GraphQLCursor{}
-					locations, err := location.Locations(scope)
+					locations, err := location.LocationsWithType(scope, types)
 					if err != nil {
 						return nil, err
 					}

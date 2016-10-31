@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/dewski/spatial"
@@ -58,6 +59,66 @@ type Location struct {
 	ID        int64     `db:"id" json:"id"`
 	UpdatedAt time.Time `db:"updated_at" json:"updated_at"`
 	CreatedAt time.Time `db:"created_at" json:"created_at"`
+}
+
+func GetLocation(locationID int64) (*Location, error) {
+	location := &Location{}
+	err := database.Conn().
+		Select("*").
+		From("locations").
+		Where("id = $1", locationID).
+		QueryStruct(location)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return location, nil
+}
+
+func Locations(scope database.GraphQLScope) ([]*Location, error) {
+	locations := []*Location{}
+	builder := database.Conn().
+		Select("*").
+		From("locations")
+
+	scope.OrderBy = database.OrderOnCreatedAt
+	query, err := database.ApplyGraphQLScope(builder, scope)
+	if err != nil {
+		return nil, err
+	}
+
+	err = query.QueryStructs(&locations)
+	if err != nil {
+		return nil, err
+	}
+
+	return locations, nil
+}
+
+func LocationsWithType(scope database.GraphQLScope, types []string) ([]*Location, error) {
+	locations := []*Location{}
+	builder := database.Conn().
+		Select("*").
+		From("locations").
+		SetIsInterpolated(false)
+
+	if len(types) > 0 {
+		builder = builder.Where(fmt.Sprintf("location_type ?| array['%s']", strings.Join(types, "','")))
+	}
+
+	scope.OrderBy = database.OrderOnCreatedAt
+	query, err := database.ApplyGraphQLScope(builder, scope)
+	if err != nil {
+		return nil, err
+	}
+
+	err = query.QueryStructs(&locations)
+	if err != nil {
+		return nil, err
+	}
+
+	return locations, nil
 }
 
 func (l Location) Cursor() relay.ConnectionCursor {
@@ -119,41 +180,6 @@ func (l Location) Update(sc supercharger.Supercharger) error {
 	fmt.Printf("Successfully updated nid=%d\n", l.Nid)
 
 	return nil
-}
-
-func GetLocation(locationID int64) (*Location, error) {
-	location := &Location{}
-	err := database.Conn().
-		Select("*").
-		From("locations").
-		Where("id = $1", locationID).
-		QueryStruct(location)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return location, nil
-}
-
-func Locations(scope database.GraphQLScope) ([]*Location, error) {
-	locations := []*Location{}
-	builder := database.Conn().
-		Select("*").
-		From("locations")
-
-	scope.OrderBy = database.OrderOnCreatedAt
-	query, err := database.ApplyGraphQLScope(builder, scope)
-	if err != nil {
-		return nil, err
-	}
-
-	err = query.QueryStructs(&locations)
-	if err != nil {
-		return nil, err
-	}
-
-	return locations, nil
 }
 
 func Sync() (added, updated int, err error) {
