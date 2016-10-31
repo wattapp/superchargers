@@ -118,65 +118,64 @@ func BuildSchema() (graphql.Schema, error) {
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					raw := *l.AddressLine1
-					if raw == "" {
+					if l.AddressLine1 == nil {
 						return nil, nil
 					}
-					return raw, nil
+					return *l.AddressLine1, nil
 				},
 			},
 			"addressLine2": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					raw := *l.AddressLine2
-					if raw == "" {
+					if l.AddressLine2 == nil {
 						return nil, nil
 					}
-					return raw, nil
+					return *l.AddressLine2, nil
 				},
 			},
 			"addressNotes": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					raw := *l.AddressNotes
-					if raw == "" {
+					if l.AddressNotes == nil {
 						return nil, nil
 					}
-					return raw, nil
+					return *l.AddressNotes, nil
 				},
 			},
 			"amentities": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					return l.Amenities, nil
+					if l.Amenities == nil {
+						return nil, nil
+					}
+					return *l.Amenities, nil
 				},
 			},
 			"baiduLat": &graphql.Field{
 				Type: graphql.Float,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					return l.BaiduLat, nil
+					return *l.BaiduLat, nil
 				},
 			},
 			"baiduLng": &graphql.Field{
 				Type: graphql.Float,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					return l.BaiduLng, nil
+					return *l.BaiduLng, nil
 				},
 			},
 			"chargers": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					raw := *l.Chargers
-					if raw == "" {
+					if l.Chargers == nil {
 						return nil, nil
 					}
-					return raw, nil
+					return *l.Chargers, nil
 				},
 			},
 			"city": &graphql.Field{
@@ -204,29 +203,30 @@ func BuildSchema() (graphql.Schema, error) {
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					raw := *l.DestinationChargerLogo
-					if raw == "" {
+					if l.DestinationChargerLogo == nil {
 						return nil, nil
 					}
-					return raw, nil
+					return *l.DestinationChargerLogo, nil
 				},
 			},
 			"destinationWebsite": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					raw := *l.DestinationWebsite
-					if raw == "" {
+					if l.DestinationWebsite == nil {
 						return nil, nil
 					}
-					return raw, nil
+					return *l.DestinationWebsite, nil
 				},
 			},
 			"directionsLink": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					return l.DirectionsLink, nil
+					if l.DirectionsLink == nil {
+						return nil, nil
+					}
+					return *l.DirectionsLink, nil
 				},
 			},
 			"emails": &graphql.Field{
@@ -247,11 +247,10 @@ func BuildSchema() (graphql.Schema, error) {
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					raw := *l.Hours
-					if raw == "" {
+					if l.Hours == nil {
 						return nil, nil
 					}
-					return raw, nil
+					return *l.Hours, nil
 				},
 			},
 			"isGallery": &graphql.Field{
@@ -265,28 +264,28 @@ func BuildSchema() (graphql.Schema, error) {
 				Type: graphql.Int,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					return l.KioskPinX, nil
+					return *l.KioskPinX, nil
 				},
 			},
 			"kioskPinY": &graphql.Field{
 				Type: graphql.Int,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					return l.KioskPinY, nil
+					return *l.KioskPinY, nil
 				},
 			},
 			"kioskZoomPinX": &graphql.Field{
 				Type: graphql.Int,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					return l.KioskZoomPinX, nil
+					return *l.KioskZoomPinX, nil
 				},
 			},
 			"kioskZoomPinY": &graphql.Field{
 				Type: graphql.Int,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					return l.KioskZoomPinY, nil
+					return *l.KioskZoomPinY, nil
 				},
 			},
 			"latitude": &graphql.Field{
@@ -342,22 +341,20 @@ func BuildSchema() (graphql.Schema, error) {
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					raw := *l.PostalCode
-					if raw == "" {
+					if l.PostalCode == nil {
 						return nil, nil
 					}
-					return raw, nil
+					return *l.PostalCode, nil
 				},
 			},
 			"provinceState": &graphql.Field{
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					raw := *l.ProvinceState
-					if raw == "" {
+					if l.ProvinceState == nil {
 						return nil, nil
 					}
-					return raw, nil
+					return *l.ProvinceState, nil
 				},
 			},
 			"region": &graphql.Field{
@@ -375,7 +372,7 @@ func BuildSchema() (graphql.Schema, error) {
 				},
 			},
 			"salesRepresentative": &graphql.Field{
-				Type: graphql.String,
+				Type: graphql.Boolean,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					return l.SalesRepresentative, nil
@@ -385,11 +382,10 @@ func BuildSchema() (graphql.Schema, error) {
 				Type: graphql.String,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					raw := *l.SubRegion
-					if raw == "" {
+					if l.SubRegion == nil {
 						return nil, nil
 					}
-					return raw, nil
+					return *l.SubRegion, nil
 				},
 			},
 			"title": &graphql.Field{
