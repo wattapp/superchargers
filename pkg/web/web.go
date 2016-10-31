@@ -25,6 +25,8 @@ func Run() error {
 	// Configure middleware
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Static("/assets", "public/assets")
+	e.File("/graphiql", "public/graphiql.html")
 
 	h := handler.New(&handler.Config{
 		Schema: &Schema,
