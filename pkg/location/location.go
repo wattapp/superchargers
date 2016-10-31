@@ -156,31 +156,29 @@ func Locations(scope database.GraphQLScope) ([]*Location, error) {
 	return locations, nil
 }
 
-func Update() {
-	for {
-		fmt.Println("Checking for super chargers...")
-		err := Sync()
-		if err != nil {
-			fmt.Println(err.Error())
-		}
-		time.Sleep(24 * time.Hour)
-	}
-}
-
-func Sync() error {
+func Sync() (added, updated int, err error) {
+	added, updated = 0, 0
+	start := time.Now().UTC()
 	locations, err := supercharger.Superchargers()
 	if err != nil {
-		return err
+		return
 	}
 
 	for _, location := range locations {
-		_, err = syncLocation(location)
+		var l *Location
+		l, err = syncLocation(location)
 		if err != nil {
-			return err
+			return
+		}
+
+		if l.CreatedAt.After(start) {
+			added += 1
+		} else if l.UpdatedAt.After(start) {
+			updated += 1
 		}
 	}
 
-	return nil
+	return
 }
 
 func syncLocation(sc supercharger.Supercharger) (*Location, error) {
