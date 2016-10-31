@@ -20,8 +20,8 @@ var emailType *graphql.Object
 var phoneType *graphql.Object
 
 // Custom node field types
-var enumChargerType = graphql.NewEnum(graphql.EnumConfig{
-	Name: "Type",
+var enumLocationType = graphql.NewEnum(graphql.EnumConfig{
+	Name: "LocationType",
 	Values: graphql.EnumValueConfigMap{
 		"SUPERCHARGER": &graphql.EnumValueConfig{
 			Value: "SUPERCHARGER",
@@ -34,7 +34,7 @@ var enumChargerType = graphql.NewEnum(graphql.EnumConfig{
 
 var typeFields = graphql.FieldConfigArgument{
 	"type": &graphql.ArgumentConfig{
-		Type: graphql.NewList(enumChargerType),
+		Type: graphql.NewList(enumLocationType),
 	},
 }
 var typeArgs = relay.NewConnectionArgs(typeFields)
