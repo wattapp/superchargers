@@ -149,6 +149,12 @@
 			"revisionTime": "2016-10-29T03:41:37Z"
 		},
 		{
+			"checksumSHA1": "p+Bj1OSkp9/zxr6oZGzBAvYsdm0=",
+			"path": "github.com/kylelemons/go-gypsy/yaml",
+			"revision": "08cad365cd28a7fba23bb1e57aa43c5e18ad8bb8",
+			"revisionTime": "2016-09-05T02:00:20Z"
+		},
+		{
 			"checksumSHA1": "Yxu36FY6Li+jNXv5Xtx9H7FMAqg=",
 			"path": "github.com/labstack/echo",
 			"revision": "276394d973b8cdf2569c18ae5dc0edbb5455f8e5",
