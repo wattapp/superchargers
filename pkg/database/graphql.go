@@ -73,6 +73,9 @@ func ApplyGraphQLScope(builder *dat.SelectBuilder, scope GraphQLScope) (*dat.Sel
 		}
 	}
 
+	// Set the default limit window to determine if there is a next page
+	scope.Limit = scope.Limit + 1
+
 	if scope.First != -1 {
 		scope.Limit = scope.First + 1
 	}
@@ -148,16 +151,21 @@ func GraphQLConnection(arraySlice []GraphQLCursor, scope GraphQLScope) *relay.Co
 	limit := min(DefaultLimit, len(arraySlice))
 	begin, end := 0, limit
 
-	if args.First != -1 {
+	if args.First == -1 && args.Last == -1 {
+		// There are more pages
+		if len(arraySlice) == limit+1 {
+			// We don't want to grab the last edge that was used for pagination
+			end = end - 1
+			endCursor = arraySlice[end].Cursor()
+		}
+	} else if args.First != -1 {
 		// There are more pages
 		if len(arraySlice) == args.First+1 {
 			// We don't want to grab the last edge that was used for pagination
 			end = end - 1
 			endCursor = arraySlice[args.First].Cursor()
 		}
-	}
-
-	if args.Last != -1 {
+	} else if args.Last != -1 {
 		// There are more pages
 		if len(arraySlice) == args.Last+1 {
 			end = args.Last
