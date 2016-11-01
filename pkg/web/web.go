@@ -23,7 +23,12 @@ func Run() error {
 	e := echo.New()
 
 	// Configure middleware
-	e.Use(middleware.Logger())
+	// Heroku has its own logging
+	if os.Getenv("DYNO") == "" {
+		e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+			Format: "time=${time_rfc3339} method=${method} path=${path} host=${host} status=${status} bytes_in=${bytes_in} bytes_out=${bytes_out}\n",
+		}))
+	}
 	e.Use(middleware.Recover())
 	e.Static("/assets", "public/assets")
 	e.File("/graphiql", "public/graphiql.html")
