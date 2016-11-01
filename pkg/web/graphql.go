@@ -38,12 +38,131 @@ var enumLocationType = graphql.NewEnum(graphql.EnumConfig{
 	},
 })
 
-var typeFields = graphql.FieldConfigArgument{
+var enumRegion = graphql.NewEnum(graphql.EnumConfig{
+	Name: "Region",
+	Values: graphql.EnumValueConfigMap{
+		"NORTH_AMERICA": &graphql.EnumValueConfig{
+			Value: "north_america",
+		},
+		"EUROPE": &graphql.EnumValueConfig{
+			Value: "europe",
+		},
+		"ASIA_PACIFIC": &graphql.EnumValueConfig{
+			Value: "asia_pacific",
+		},
+	},
+})
+
+var enumCountry = graphql.NewEnum(graphql.EnumConfig{
+	Name: "Country",
+	Values: graphql.EnumValueConfigMap{
+		"ANDORRA": &graphql.EnumValueConfig{
+			Value: "Andorra",
+		},
+		"AUSTRALIA": &graphql.EnumValueConfig{
+			Value: "Australia",
+		},
+		"AUSTRIA": &graphql.EnumValueConfig{
+			Value: "Austria",
+		},
+		"BELGIUM": &graphql.EnumValueConfig{
+			Value: "Belgium",
+		},
+		"CANADA": &graphql.EnumValueConfig{
+			Value: "Canada",
+		},
+		"CHINA": &graphql.EnumValueConfig{
+			Value: "China",
+		},
+		"CROATIA": &graphql.EnumValueConfig{
+			Value: "Croatia",
+		},
+		"CZECH_REPUBLIC": &graphql.EnumValueConfig{
+			Value: "Czech Republic",
+		},
+		"DENMARK": &graphql.EnumValueConfig{
+			Value: "Denmark",
+		},
+		"FINLAND": &graphql.EnumValueConfig{
+			Value: "Finland",
+		},
+		"FRANCE": &graphql.EnumValueConfig{
+			Value: "France",
+		},
+		"GERMANY": &graphql.EnumValueConfig{
+			Value: "Germany",
+		},
+		"HONG_KONG": &graphql.EnumValueConfig{
+			Value: "Hong Kong",
+		},
+		"ITALY": &graphql.EnumValueConfig{
+			Value: "Italy",
+		},
+		"JAPAN": &graphql.EnumValueConfig{
+			Value: "Japan",
+		},
+		"LIECHTENSTEIN": &graphql.EnumValueConfig{
+			Value: "Liechtenstein",
+		},
+		"LUXEMBOURG": &graphql.EnumValueConfig{
+			Value: "Luxembourg",
+		},
+		"MACAU": &graphql.EnumValueConfig{
+			Value: "Macau",
+		},
+		"MEXICO": &graphql.EnumValueConfig{
+			Value: "Mexico",
+		},
+		"NETHERLANDS": &graphql.EnumValueConfig{
+			Value: "Netherlands",
+		},
+		"NORWAY": &graphql.EnumValueConfig{
+			Value: "Norway",
+		},
+		"POLAND": &graphql.EnumValueConfig{
+			Value: "Poland",
+		},
+		"SERBIA": &graphql.EnumValueConfig{
+			Value: "Serbia",
+		},
+		"SLOVAKIA": &graphql.EnumValueConfig{
+			Value: "Slovakia",
+		},
+		"SLOVENIA": &graphql.EnumValueConfig{
+			Value: "Slovenia",
+		},
+		"SPAIN": &graphql.EnumValueConfig{
+			Value: "Spain",
+		},
+		"SWEDEN": &graphql.EnumValueConfig{
+			Value: "Sweden",
+		},
+		"SWITZERLAND": &graphql.EnumValueConfig{
+			Value: "Switzerland",
+		},
+		"TAIWAN": &graphql.EnumValueConfig{
+			Value: "Taiwan",
+		},
+		"UNITED_KINGDOM": &graphql.EnumValueConfig{
+			Value: "United Kingdom",
+		},
+		"UNITED_STATES": &graphql.EnumValueConfig{
+			Value: "United States",
+		},
+	},
+})
+
+var locationFieldArguments = relay.NewConnectionArgs(graphql.FieldConfigArgument{
 	"type": &graphql.ArgumentConfig{
 		Type: graphql.NewList(enumLocationType),
 	},
-}
-var typeArgs = relay.NewConnectionArgs(typeFields)
+	"region": &graphql.ArgumentConfig{
+		Type: graphql.NewList(enumRegion),
+	},
+	"country": &graphql.ArgumentConfig{
+		Type: graphql.NewList(enumCountry),
+	},
+})
 
 func BuildSchema() (graphql.Schema, error) {
 	nodeDefinitions = relay.NewNodeDefinitions(relay.NodeDefinitionsConfig{
@@ -423,18 +542,11 @@ func BuildSchema() (graphql.Schema, error) {
 		Fields: graphql.Fields{
 			"locations": &graphql.Field{
 				Type: locationsConnectionDefinition.ConnectionType,
-				Args: typeArgs,
+				Args: locationFieldArguments,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					scope := database.NewGraphQLScopeWithFilters(p.Args)
-					var types []string
-					if p.Args["type"] != nil {
-						for _, t := range p.Args["type"].([]interface{}) {
-							types = append(types, t.(string))
-						}
-					}
-
 					data := []database.GraphQLCursor{}
-					locations, err := location.LocationsWithType(scope, types)
+					locations, err := location.Locations(scope)
 					if err != nil {
 						return nil, err
 					}

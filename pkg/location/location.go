@@ -82,29 +82,40 @@ func Locations(scope database.GraphQLScope) ([]*Location, error) {
 		Select("*").
 		From("locations")
 
-	scope.OrderBy = database.OrderOnCreatedAt
-	query, err := database.ApplyGraphQLScope(builder, scope)
-	if err != nil {
-		return nil, err
+	if scope.Args["region"] != nil {
+		var regions []string
+		for _, r := range scope.Args["region"].([]interface{}) {
+			regions = append(regions, r.(string))
+		}
+
+		if len(regions) > 0 {
+			builder = builder.Where("region IN $1", regions)
+		}
 	}
 
-	err = query.QueryStructs(&locations)
-	if err != nil {
-		return nil, err
+	if scope.Args["country"] != nil {
+		var countries []string
+		for _, c := range scope.Args["country"].([]interface{}) {
+			countries = append(countries, c.(string))
+		}
+
+		if len(countries) > 0 {
+			builder = builder.Where("country IN $1", countries)
+		}
 	}
 
-	return locations, nil
-}
+	if scope.Args["type"] != nil {
+		var types []string
+		for _, t := range scope.Args["type"].([]interface{}) {
+			types = append(types, t.(string))
+		}
 
-func LocationsWithType(scope database.GraphQLScope, types []string) ([]*Location, error) {
-	locations := []*Location{}
-	builder := database.Conn().
-		Select("*").
-		From("locations").
-		SetIsInterpolated(false)
-
-	if len(types) > 0 {
-		builder = builder.Where(fmt.Sprintf("location_type ?| array['%s']", strings.Join(types, "','")))
+		if len(types) > 0 {
+			builder = builder.
+				SetIsInterpolated(false).
+				Where(fmt.Sprintf("location_type ?| array['%s']", strings.Join(types, "','"))).
+				SetIsInterpolated(true)
+		}
 	}
 
 	scope.OrderBy = database.OrderOnCreatedAt
