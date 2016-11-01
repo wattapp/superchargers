@@ -23,6 +23,7 @@ type GraphQLCursor interface {
 type GraphQLScope struct {
 	relay.ConnectionArguments
 	relay.ArraySliceMetaInfo
+	Args    map[string]interface{}
 	Limit   int
 	Order   string
 	OrderBy string
@@ -33,17 +34,17 @@ func NewGraphQLScope() GraphQLScope {
 	return NewGraphQLScopeWithFilters(filters)
 }
 
-func NewGraphQLScopeWithFilters(filters map[string]interface{}) GraphQLScope {
-	args := relay.NewConnectionArguments(filters)
+func NewGraphQLScopeWithFilters(args map[string]interface{}) GraphQLScope {
 	scope := GraphQLScope{
-		ConnectionArguments: args,
+		Args:                args,
+		ConnectionArguments: relay.NewConnectionArguments(args),
 		Limit:               DefaultLimit,
 		Order:               "ASC",
 		OrderBy:             "id",
 	}
 
-	if filters["order"] != nil {
-		scope.Order = filters["order"].(string)
+	if scope.Args["order"] != nil {
+		scope.Order = scope.Args["order"].(string)
 	}
 
 	return scope
