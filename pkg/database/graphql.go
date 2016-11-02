@@ -101,7 +101,6 @@ func ApplyGraphQLScope(builder *dat.SelectBuilder, scope GraphQLScope) (*dat.Sel
 		}
 	}
 
-	fmt.Printf("%+v", scope)
 	if scope.Limit == 0 {
 		builder = builder.Limit(uint64(DefaultLimit))
 	} else if scope.Limit != -1 {
