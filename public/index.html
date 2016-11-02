@@ -134,7 +134,7 @@
       `
     }
 
-    document.getElementById('form').onkeyup = function (e) {
+    document.getElementById('form').onchange = function (e) {
       fetch("/graphql", {
         method: "POST",
         body: this.value,
@@ -169,15 +169,15 @@
                 markers.push(marker)
             })
 
-            console.log(coordinates)
+            if(coordinates.length > 1) {
+              var bounds = coordinates.reduce(function(bounds, coord) {
+                  return bounds.extend(coord);
+              }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
 
-            var bounds = coordinates.reduce(function(bounds, coord) {
-                return bounds.extend(coord);
-            }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
-
-            map.fitBounds(bounds, {
-                padding: 50
-            });
+              map.fitBounds(bounds, {
+                  padding: 50
+              });
+            }
           })
         } else {
           console.log('Network response was not ok.');
@@ -186,6 +186,10 @@
       .catch(function(error) {
         console.log('There has been a problem with your fetch operation: ' + error.message);
       });
+    }
+
+    window.onload = function(){
+      document.getElementById('form').onchange()
     }
     </script>
     <script>
