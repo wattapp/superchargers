@@ -29,6 +29,9 @@ var enumLocationType = graphql.NewEnum(graphql.EnumConfig{
 		"STANDARD_CHARGER": &graphql.EnumValueConfig{
 			Value: "standard charger",
 		},
+		"DESTINATION_CHARGER": &graphql.EnumValueConfig{
+			Value: "destination charger",
+		},
 		"STORE": &graphql.EnumValueConfig{
 			Value: "store",
 		},
