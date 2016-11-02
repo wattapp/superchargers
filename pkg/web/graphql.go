@@ -545,6 +545,12 @@ func BuildSchema() (graphql.Schema, error) {
 				Args: locationFieldArguments,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					scope := database.NewGraphQLScopeWithFilters(p.Args)
+
+					// Include all results by default
+					if scope.First == -1 && scope.Last == -1 {
+						scope.Limit = -1
+					}
+
 					data := []database.GraphQLCursor{}
 					locations, err := location.Locations(scope)
 					if err != nil {

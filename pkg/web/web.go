@@ -30,7 +30,7 @@ func Run() error {
 		}))
 	}
 	e.Use(middleware.Recover())
-	e.Static("/assets", "public/assets")
+	e.Static("/", "public")
 	e.File("/graphiql", "public/graphiql.html")
 
 	h := handler.New(&handler.Config{

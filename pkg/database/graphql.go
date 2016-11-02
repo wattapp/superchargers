@@ -73,9 +73,6 @@ func ApplyGraphQLScope(builder *dat.SelectBuilder, scope GraphQLScope) (*dat.Sel
 		}
 	}
 
-	// Set the default limit window to determine if there is a next page
-	scope.Limit = scope.Limit + 1
-
 	if scope.First != -1 {
 		scope.Limit = scope.First + 1
 	}
@@ -104,7 +101,10 @@ func ApplyGraphQLScope(builder *dat.SelectBuilder, scope GraphQLScope) (*dat.Sel
 		}
 	}
 
-	if scope.Limit != -1 {
+	fmt.Printf("%+v", scope)
+	if scope.Limit == 0 {
+		builder = builder.Limit(uint64(DefaultLimit))
+	} else if scope.Limit != -1 {
 		builder = builder.Limit(uint64(scope.Limit))
 	}
 
