@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/handler"
@@ -50,11 +51,27 @@ func Run() error {
 	return err
 }
 
+var encrypt = map[string]bool{
+	"superchargers.io":     true,
+	"www.superchargers.io": true,
+	"localhost:1234":       false,
+}
+
 func letsEncrypt(c echo.Context) error {
-	challenge := os.Getenv("LETS_ENCRYPT_CHALLENGE")
-	param := c.Param("challenge")
-	if param == challenge {
-		return c.String(http.StatusOK, os.Getenv("LETS_ENCRYPT_KEY"))
+	host := c.Request().Host()
+	if encrypt[host] {
+		challengeEnv := "LETS_ENCRYPT_CHALLENGE"
+		keyEnv := "LETS_ENCRYPT_CHALLENGE"
+		if strings.HasPrefix(host, "www.") {
+			challengeEnv = "LETS_ENCRYPT_WWW_CHALLENGE"
+			keyEnv = "LETS_ENCRYPT_WWW_CHALLENGE"
+		}
+		challenge := os.Getenv(challengeEnv)
+		param := c.Param("challenge")
+		if param == challenge {
+			return c.String(http.StatusOK, os.Getenv(keyEnv))
+		}
 	}
+
 	return errors.New("Let's Encrypt challenge did not match")
 }
