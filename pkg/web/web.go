@@ -1,7 +1,9 @@
 package web
 
 import (
+	"errors"
 	"fmt"
+	"net/http"
 	"os"
 
 	"github.com/graphql-go/graphql"
@@ -31,6 +33,7 @@ func Run() error {
 	}
 	e.Use(middleware.Recover())
 	e.Static("/", "public")
+	e.Get("/.well-known/acme-challenge/:challenge", letsEncrypt)
 	e.File("/graphiql", "public/graphiql.html")
 
 	h := handler.New(&handler.Config{
@@ -45,4 +48,13 @@ func Run() error {
 
 	err = e.Run(standard.New(addr))
 	return err
+}
+
+func letsEncrypt(c echo.Context) error {
+	challenge := os.Getenv("LETS_ENCRYPT_CHALLENGE")
+	param := c.Param("challenge")
+	if param == challenge {
+		return c.String(http.StatusOK, os.Getenv("LETS_ENCRYPT_KEY"))
+	}
+	return errors.New("Let's Encrypt challenge did not match")
 }
