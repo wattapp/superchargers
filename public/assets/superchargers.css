@@ -1,0 +1,203 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  margin: 0;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+}
+header {
+  background: rgba(255, 255, 255, 0.95);
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  width: 100%;
+  height: 50px;
+  font-size: 13px;
+  border-bottom: 2px solid #c00;
+}
+header.loading {
+  border-bottom: 0;
+}
+header h1 {
+  float: left;
+  margin: 0 0 0 25px;
+}
+header ul {
+  margin: 16px 0 0;
+  padding: 0;
+  float: right;
+}
+header li {
+  float: left;
+  list-style: none;
+  margin-right: 25px;
+  font-weight: bold;
+}
+#loader {
+  position: fixed;
+  z-index: 110;
+  top: 50px;
+  left: 0;
+  right: 0;
+  height: 2px;
+}
+a {
+  color: #000;
+}
+.marker {
+  background-image: url("/assets/icons/store@2x.png");
+  background-size: 23px 33px;
+  width: 23px;
+  height: 33px;
+}
+.marker.store.coming-soon {
+  background-image: url("/assets/icons/store-comingsoon@2x.png");
+}
+.marker.supercharger {
+  background-image: url("/assets/icons/supercharger@2x.png");
+}
+.marker.supercharger.coming-soon {
+  background-image: url("/assets/icons/supercharger-comingsoon@2x.png");
+}
+.marker.service {
+  background-image: url("/assets/icons/service@2x.png");
+}
+.marker.service.coming-soon {
+  background-image: url("/assets/icons/service-comingsoon@2x.png");
+}
+.marker.charger {
+  background-image: url("/assets/icons/charger@2x.png");
+}
+.marker.charger.coming-soon {
+  background-image: url("/assets/icons/charger-comingsoon@2x.png");
+}
+footer {
+  background: rgba(0, 0, 0, 0.75);
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  position: absolute;
+  z-index: 100;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+}
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+form {
+  position: absolute;
+  z-index: 100;
+  top: 75px;
+  left: 25px;
+  bottom: 75px;
+  width: 300px;
+}
+form button {
+  background: #c00;
+  color: #fff;
+  border: 0;
+  border-radius: 5px;
+  width: 100px;
+  height: 35px;
+  margin: 0;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: bold;
+  outline: none;
+}
+form button:active {
+  background: #b90000;
+}
+form textarea {
+  background: rgba(255, 255, 255, 0.9);
+  width: 300px;
+  border-radius: 5px;
+  height: 100%;
+  border: 0;
+  font: 14px/1.5em Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  outline: none;
+  overflow-x: scroll;
+  resize: horizontal;
+}
+
+/* Remove these to get rid of the spinner */
+.pace {
+  -webkit-pointer-events: none;
+  pointer-events: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.pace-inactive {
+  display: none;
+}
+
+.pace .pace-progress {
+  background: #c00;
+  position: fixed;
+  z-index: 2000;
+  top: 50px;
+  right: 100%;
+  width: 100%;
+  height: 2px;
+  overflow-y: hidden;
+}
+
+.pace .pace-progress-inner {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px #c00, 0 0 5px #c00;
+  opacity: 1.0;
+  -webkit-transform: rotate(3deg) translate(0px, -4px);
+  -moz-transform: rotate(3deg) translate(0px, -4px);
+  -ms-transform: rotate(3deg) translate(0px, -4px);
+  -o-transform: rotate(3deg) translate(0px, -4px);
+  transform: rotate(3deg) translate(0px, -4px);
+}
+
+.pace .pace-activity {
+  display: block;
+  position: fixed;
+  z-index: 2000;
+  top: 15px;
+  right: 15px;
+  width: 14px;
+  height: 14px;
+  border: solid 2px transparent;
+  border-top-color: #c00;
+  border-left-color: #c00;
+  border-radius: 10px;
+  -webkit-animation: pace-spinner 400ms linear infinite;
+  -moz-animation: pace-spinner 400ms linear infinite;
+  -ms-animation: pace-spinner 400ms linear infinite;
+  -o-animation: pace-spinner 400ms linear infinite;
+  animation: pace-spinner 400ms linear infinite;
+}
+
+@-webkit-keyframes pace-spinner {
+  0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@-moz-keyframes pace-spinner {
+  0% { -moz-transform: rotate(0deg); transform: rotate(0deg); }
+  100% { -moz-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@-o-keyframes pace-spinner {
+  0% { -o-transform: rotate(0deg); transform: rotate(0deg); }
+  100% { -o-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@-ms-keyframes pace-spinner {
+  0% { -ms-transform: rotate(0deg); transform: rotate(0deg); }
+  100% { -ms-transform: rotate(360deg); transform: rotate(360deg); }
+}
+@keyframes pace-spinner {
+  0% { transform: rotate(0deg); transform: rotate(0deg); }
+  100% { transform: rotate(360deg); transform: rotate(360deg); }
+}
