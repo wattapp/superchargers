@@ -2,6 +2,7 @@ package web
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 
 	"github.com/graphql-go/graphql"
@@ -164,6 +165,9 @@ var locationFieldArguments = relay.NewConnectionArgs(graphql.FieldConfigArgument
 	},
 	"country": &graphql.ArgumentConfig{
 		Type: graphql.NewList(enumCountry),
+	},
+	"openSoon": &graphql.ArgumentConfig{
+		Type: graphql.Boolean,
 	},
 })
 

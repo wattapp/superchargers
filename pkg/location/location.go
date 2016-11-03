@@ -104,6 +104,10 @@ func Locations(scope database.GraphQLScope) ([]*Location, error) {
 		}
 	}
 
+	if scope.Args["openSoon"] != nil {
+		builder = builder.Where("open_soon = $1", scope.Args["openSoon"])
+	}
+
 	if scope.Args["type"] != nil {
 		var types []string
 		for _, t := range scope.Args["type"].([]interface{}) {
