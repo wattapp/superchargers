@@ -69,6 +69,12 @@ function query(event) {
   }).then(function(response) {
     if(response.ok) {
       return response.json().then(function(json) {
+        if(json.errors != undefined) {
+          json.errors.forEach(function(error) {
+            alert(error.message)
+          })
+          return
+        }
         // When we get a new result set, clear the markers
         markers.forEach(function(marker) {
           marker.remove()
@@ -117,11 +123,11 @@ function query(event) {
       })
     } else {
       Pace.stop()
-      console.log('Network response was not ok.');
+      alert('Network request could not complete')
     }
   })
   .catch(function(error) {
-    console.log('There has been a problem with your fetch operation: ' + error.message);
+    alert("There was a problem with your request")
     Pace.stop()
   });
 }
