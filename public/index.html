@@ -41,10 +41,31 @@
         color: #000;
       }
       .marker {
-        background-image: url("/assets/icon-supercharger@2x.png");
+        background-image: url("/assets/icons/store@2x.png");
         background-size: 23px 33px;
         width: 23px;
         height: 33px;
+      }
+      .marker.store.coming-soon {
+        background-image: url("/assets/icons/store-comingsoon@2x.png");
+      }
+      .marker.supercharger {
+        background-image: url("/assets/icons/supercharger@2x.png");
+      }
+      .marker.supercharger.coming-soon {
+        background-image: url("/assets/icons/supercharger-comingsoon@2x.png");
+      }
+      .marker.service {
+        background-image: url("/assets/icons/service@2x.png");
+      }
+      .marker.service.coming-soon {
+        background-image: url("/assets/icons/service-comingsoon@2x.png");
+      }
+      .marker.charger {
+        background-image: url("/assets/icons/charger@2x.png");
+      }
+      .marker.charger.coming-soon {
+        background-image: url("/assets/icons/charger-comingsoon@2x.png");
       }
       footer {
         background: rgba(0, 0, 0, 0.75);
@@ -88,7 +109,7 @@
       </ul>
     </header>
     <textarea id="form">{
-  locations(country: UNITED_STATES, first: 100) {
+  locations(country: UNITED_STATES, type: [SUPERCHARGER, STORE]) {
     edges {
       location:node {
         id
@@ -96,6 +117,8 @@
         latitude
         longitude
         title
+        locationType
+        openSoon
       }
     }
   }
@@ -123,15 +146,31 @@
 
       body = ""
       for(item in location) {
-        body += `<li>${item}: ${location[item]}</li>`
+        body += `<li><strong>${item}:</strong><code>${location[item]}</code></li>`
       }
 
-      return `
-      ${location.title}
-      <ul>
-        ${body}
-      </ul>
-      `
+      return `<ul>${body}</ul>`
+    }
+
+    var buildElementForLocation = function(location) {
+      var el = document.createElement('div');
+      el.className = 'marker';
+      console.log(location.title, location.locationType, location.openSoon)
+      if("locationType" in location) {
+        if(location.locationType.includes("store")) {
+          el.classList.add("store")
+        } else if(location.locationType.includes("supercharger")) {
+          el.classList.add("supercharger")
+        } else if(location.locationType.includes("service")) {
+          el.classList.add("service")
+        } else if(location.locationType.includes("standard charger") || location.locationType.includes("destination charger")) {
+          el.classList.add("charger")
+        }
+      }
+      if("openSoon" in location && location.openSoon) {
+        el.classList.add("coming-soon")
+      }
+      return el
     }
 
     document.getElementById('form').onchange = function (e) {
@@ -154,14 +193,12 @@
 
             markers = []
             json.data.locations.edges.forEach(function(node) {
-                // create DOM element for the marker
-                var el = document.createElement('div');
-                el.className = 'marker';
+                var el = buildElementForLocation(node.location)
 
-                var popup = new mapboxgl.Popup().setHTML(buildHTML(node.location))
+                var popup = new mapboxgl.Popup({offset: [0, -36]}).setHTML(buildHTML(node.location))
 
                 // create the marker
-                var marker = new mapboxgl.Marker(el, {offset: [-12, 5]})
+                var marker = new mapboxgl.Marker(el, {offset: [-12, -33]})
                     .setLngLat([node.location.longitude, node.location.latitude])
                     .setPopup(popup)
                     .addTo(map)
