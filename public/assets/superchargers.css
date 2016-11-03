@@ -49,6 +49,9 @@ header li {
   margin-right: 25px;
   font-weight: bold;
 }
+header li a.active {
+  color: #c00;
+}
 #loader {
   position: fixed;
   z-index: 110;

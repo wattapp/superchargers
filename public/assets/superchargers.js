@@ -1,4 +1,16 @@
 var markers = [];
+var map;
+
+
+function urlParam(name) {
+    var url = window.location.href;
+    var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(url);
+    if (!results) {
+        return undefined;
+    }
+    return decodeURIComponent(results[1]) || undefined;
+}
+
 function buildHTML(location) {
   if(location === undefined) {
     return "Unknown location"
@@ -24,7 +36,6 @@ function updateLocationCount(count) {
 function buildElementForLocation(location) {
   var el = document.createElement('div');
   el.className = 'marker';
-  console.log(location.title, location.locationType, location.openSoon)
   if("locationType" in location) {
     if(location.locationType.includes("store")) {
       el.classList.add("store")
@@ -80,20 +91,26 @@ function query(event) {
           .setPopup(popup)
           .addTo(map)
 
+          console.log(marker)
+
           markers.push(marker)
         })
 
-        if(coordinates.length > 1) {
-          var bounds = coordinates.reduce(function(bounds, coord) {
+        var bounds;
+
+        if(coordinates.length == 1) {
+          bounds = new mapboxgl.LngLatBounds(coordinates[0], coordinates[0])
+        } else if(coordinates.length > 1) {
+          bounds = coordinates.reduce(function(bounds, coord) {
             return bounds.extend(coord);
           }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
-
-          map.fitBounds(bounds, {
-            padding: 100,
-            linear: false,
-            maxZoom: 3
-          });
         }
+
+        map.fitBounds(bounds, {
+          padding: 100,
+          linear: false,
+          maxZoom: 3
+        });
 
         updateLocationCount(markers.length)
         Pace.stop()
@@ -117,7 +134,20 @@ Pace.on('hide', function() {
 })
 
 window.onload = function() {
+  map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v9',
+      zoom: 3,
+
+      // Center of the US
+      center: [-98.585522, 39.8333333]
+  });
   var form = document.getElementsByTagName('form')[0];
+  var queryParam = urlParam("query")
+  if(queryParam != undefined) {
+    form.query.value = queryParam
+  }
+
   form.addEventListener('submit', query)
 
   form.query.addEventListener('keydown', function(e) {
