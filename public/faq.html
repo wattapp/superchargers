@@ -42,14 +42,20 @@
           </a>
         </li>
         <li>
-          All Tesla locations in a given bounding box
+          <a href="/?query=%7B%0A%20%20locations(boundingBox%3A%20%5B42.02238033615207%2C%20-76.4456118%2C%2038.88848331958911%2C%20-83.4768618%5D)%20%7B%0A%20%20%20%20edges%20%7B%0A%20%20%20%20%20%20node%20%7B%0A%20%20%20%20%20%20%20%20id%0A%20%20%20%20%20%20%20%20address%0A%20%20%20%20%20%20%20%20latitude%0A%20%20%20%20%20%20%20%20longitude%0A%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20locationType%0A%20%20%20%20%20%20%20%20openSoon%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D">
+            All Tesla locations in a given bounding box
+          </a>
         </li>
         <li>
           <a href="/?query=%7B%0A%20%20locations(country%3A%20JAPAN%2C%20type%3A%20SERVICE)%20%7B%0A%20%20%20%20edges%20%7B%0A%20%20%20%20%20%20node%20%7B%0A%20%20%20%20%20%20%20%20id%0A%20%20%20%20%20%20%20%20address%0A%20%20%20%20%20%20%20%20latitude%0A%20%20%20%20%20%20%20%20longitude%0A%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20locationType%0A%20%20%20%20%20%20%20%20openSoon%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D">
             Service centers in Japan
           </a>
         </li>
-        <li>Find superchargers that are not yet open</li>
+        <li>
+          <a href="/?query=%7B%0A%20%20locations(openSoon%3A%20true)%20%7B%0A%20%20%20%20edges%20%7B%0A%20%20%20%20%20%20node%20%7B%0A%20%20%20%20%20%20%20%20id%0A%20%20%20%20%20%20%20%20address%0A%20%20%20%20%20%20%20%20latitude%0A%20%20%20%20%20%20%20%20longitude%0A%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20locationType%0A%20%20%20%20%20%20%20%20openSoon%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D">
+            Find all locations that are opening soon
+          </a>
+        </li>
       </ul>
       <p>
         In the <a href="/graphiql">GraphiQL interactive query editor</a> provided by Superchargers.io, you can use autocomplete and the provided documentation to help craft your queries. If you need any help please open an issue on the <a href="https://github.com/wattapp/superchargers/issues">GitHub issue tracker</a> or tweet at <a href="https://twitter.com/garrettb">@garrettb</a> on Twitter.
