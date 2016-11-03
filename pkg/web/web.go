@@ -35,6 +35,7 @@ func Run() error {
 	e.Static("/", "public")
 	e.Get("/.well-known/acme-challenge/:challenge", letsEncrypt)
 	e.File("/graphiql", "public/graphiql.html")
+	e.File("/faq", "public/faq.html")
 
 	h := handler.New(&handler.Config{
 		Schema: &Schema,
