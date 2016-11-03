@@ -2,7 +2,6 @@ package web
 
 import (
 	"errors"
-	"fmt"
 	"strconv"
 
 	"github.com/graphql-go/graphql"
@@ -168,6 +167,9 @@ var locationFieldArguments = relay.NewConnectionArgs(graphql.FieldConfigArgument
 	},
 	"openSoon": &graphql.ArgumentConfig{
 		Type: graphql.Boolean,
+	},
+	"boundingBox": &graphql.ArgumentConfig{
+		Type: graphql.NewList(graphql.Float),
 	},
 })
 

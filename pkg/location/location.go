@@ -108,6 +108,18 @@ func Locations(scope database.GraphQLScope) ([]*Location, error) {
 		builder = builder.Where("open_soon = $1", scope.Args["openSoon"])
 	}
 
+	bb, ok := scope.Args["boundingBox"].([]interface{})
+	if ok && len(bb) == 4 {
+		nwLat, nwLng, seLat, seLng := bb[0], bb[1], bb[2], bb[3]
+		builder = builder.Where(
+			`ST_Contains(ST_SetSRID(ST_MakeBox2D(ST_Point($1, $2), ST_Point($3, $4)), 4326), geo)`,
+			nwLng,
+			nwLat,
+			seLng,
+			seLat,
+		)
+	}
+
 	if scope.Args["type"] != nil {
 		var types []string
 		for _, t := range scope.Args["type"].([]interface{}) {
