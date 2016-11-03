@@ -60,6 +60,12 @@ header li a.active {
   right: 0;
   height: 2px;
 }
+.anchor {
+  float: left;
+  padding-right: 5px;
+  margin-left: -25px;
+  line-height: 1;
+}
 .marker {
   background-image: url("/assets/icons/store@2x.png");
   background-size: 23px 33px;
