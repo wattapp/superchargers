@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Superchargers.io</title>
+    <title>Superchargers.io · The Tesla Charger &amp; Location GraphQL API.</title>
+    <meta name="description" content="The Tesla Supercharger, destination charger, store, service center API">
+    <meta name="tags" content="tesla,supercharger,destination charger,tesla store,tesla service center,graphql,tesla graphql,tesla api">
     <link rel="icon" type="image/x-icon" href="/favicon.png">
     <link href="/assets/superchargers.css" rel="stylesheet">
     <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.26.0/mapbox-gl.css" rel="stylesheet">
@@ -13,11 +15,11 @@
     <header id="header">
       <h1><a href="/">Superchargers.io</a></h1>
       <ul>
+        <li><a href="/faq">FAQ</a></li>
         <li><a href="/graphiql">GraphiQL</a></li>
         <li><a href="https://github.com/wattapp/superchargers">GitHub</a></li>
       </ul>
     </header>
-    <div id="loader"></div>
     <form action="/graphql" method="post">
       <textarea name="query" id="query">{
   locations(region: NORTH_AMERICA, type: [SUPERCHARGER, STORE]) {
@@ -35,7 +37,7 @@
   }
 }</textarea>
       <button type="submit">Submit</button>
-      <span id="location-count">0 locations</span>
+      <span class="location-count" id="location-count">0 locations</span>
     </form>
     <div id="map"></div>
     <script>
