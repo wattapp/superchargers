@@ -391,7 +391,7 @@ func BuildSchema() (graphql.Schema, error) {
 				Type: graphql.Boolean,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					return l.IsGallery, nil
+					return bool(l.IsGallery), nil
 				},
 			},
 			"kioskPinX": &graphql.Field{
@@ -461,7 +461,7 @@ func BuildSchema() (graphql.Schema, error) {
 				Type: graphql.Boolean,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					return l.OpenSoon, nil
+					return bool(l.OpenSoon), nil
 				},
 			},
 			"path": &graphql.Field{
@@ -509,7 +509,7 @@ func BuildSchema() (graphql.Schema, error) {
 				Type: graphql.Boolean,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
-					return l.SalesRepresentative, nil
+					return bool(l.SalesRepresentative), nil
 				},
 			},
 			"subRegion": &graphql.Field{
