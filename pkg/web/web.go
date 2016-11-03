@@ -61,10 +61,10 @@ func letsEncrypt(c echo.Context) error {
 	host := c.Request().Host()
 	if encrypt[host] {
 		challengeEnv := "LETS_ENCRYPT_CHALLENGE"
-		keyEnv := "LETS_ENCRYPT_CHALLENGE"
+		keyEnv := "LETS_ENCRYPT_KEY"
 		if strings.HasPrefix(host, "www.") {
 			challengeEnv = "LETS_ENCRYPT_WWW_CHALLENGE"
-			keyEnv = "LETS_ENCRYPT_WWW_CHALLENGE"
+			keyEnv = "LETS_ENCRYPT_WWW_KEY"
 		}
 		challenge := os.Getenv(challengeEnv)
 		param := c.Param("challenge")
