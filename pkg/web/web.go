@@ -26,7 +26,7 @@ func Run() error {
 
 	// Configure middleware
 	if os.Getenv("DYNO") != "" {
-		e.Pre(middleware.HTTPSWWWRedirect())
+		e.Pre(middleware.HTTPSRedirect())
 	} else {
 		e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 			Format: "time=${time_rfc3339} method=${method} path=${path} host=${host} status=${status} bytes_in=${bytes_in} bytes_out=${bytes_out}\n",
