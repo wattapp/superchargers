@@ -70,7 +70,7 @@ func redirectHTTPS(next echo.HandlerFunc) echo.HandlerFunc {
 		req := c.Request()
 		host := req.Host()
 		uri := req.URI()
-		if !req.IsTLS() {
+		if req.Scheme() == "http" {
 			return c.Redirect(http.StatusMovedPermanently, "https://"+host+uri)
 		}
 		return next(c)
