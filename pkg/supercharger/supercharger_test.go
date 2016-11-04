@@ -1,6 +1,7 @@
 package supercharger
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/dewski/spatial"
@@ -17,6 +18,43 @@ func TestSuperchargerEquality(t *testing.T) {
 	}
 
 	assert.True(t, a.Equal(b))
+}
+
+func TestSuperchargerImportBaiduGeo(t *testing.T) {
+	body := `{
+		"baidu_lat": "1.1",
+		"baidu_lng": "1.1",
+		"latitude": "0.0",
+		"longitude": "0.0"
+	}`
+	var a Supercharger
+	err := json.Unmarshal([]byte(body), &a)
+	assert.NoError(t, err)
+
+	point := spatial.Point{
+		Lat: 1.1,
+		Lng: 1.1,
+	}
+
+	assert.Equal(t, point, a.Geo)
+}
+
+func TestSuperchargerImportBaiduGeoWithMissingData(t *testing.T) {
+	body := `{
+		"baidu_lat": "1.1",
+		"latitude": "1.2",
+		"longitude": "1.2"
+	}`
+	var a Supercharger
+	err := json.Unmarshal([]byte(body), &a)
+	assert.NoError(t, err)
+
+	point := spatial.Point{
+		Lat: 1.2,
+		Lng: 1.2,
+	}
+
+	assert.Equal(t, point, a.Geo)
 }
 
 func TestSuperchargerEqualityAddress(t *testing.T) {

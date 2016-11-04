@@ -20,7 +20,6 @@ var columns = []string{
 	"address_line_2",
 	"address_notes",
 	"amentities",
-	"baidu_geo",
 	"chargers",
 	"city",
 	"common_name",
@@ -172,7 +171,6 @@ func (l Location) Update(sc supercharger.Supercharger) error {
 		Set("address_line_2", l.AddressLine2).
 		Set("address_notes", l.AddressNotes).
 		Set("amentities", l.Amenities).
-		Set("baidu_geo", l.BaiduGeo).
 		Set("chargers", l.Chargers).
 		Set("city", l.City).
 		Set("common_name", l.CommonName).
@@ -265,15 +263,16 @@ func syncLocation(sc supercharger.Supercharger) (*Location, error) {
 	fmt.Printf("No record found for %d, preparing to create one\n", sc.Nid)
 
 	location = &Location{Supercharger: sc}
-	if sc.BaiduLat != nil && sc.BaiduLng != nil {
-		location.BaiduGeo = &spatial.Point{
+	if sc.BaiduLat != nil && sc.BaiduLng != nil && sc.Latitude == 0.0 && sc.Longitude == 0.0 {
+		location.Geo = spatial.Point{
 			Lat: *sc.BaiduLat,
 			Lng: *sc.BaiduLng,
 		}
-	}
-	location.Geo = spatial.Point{
-		Lat: sc.Latitude,
-		Lng: sc.Longitude,
+	} else {
+		location.Geo = spatial.Point{
+			Lat: sc.Latitude,
+			Lng: sc.Longitude,
+		}
 	}
 	location.CreatedAt = time.Now().UTC()
 	location.UpdatedAt = time.Now().UTC()
