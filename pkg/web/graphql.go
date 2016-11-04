@@ -157,7 +157,8 @@ var enumCountry = graphql.NewEnum(graphql.EnumConfig{
 
 var locationFieldArguments = relay.NewConnectionArgs(graphql.FieldConfigArgument{
 	"type": &graphql.ArgumentConfig{
-		Type: graphql.NewList(enumLocationType),
+		Type:        graphql.NewList(enumLocationType),
+		Description: "Each location may provide of 1 or many services such as supercharging, standard charging, destination charging, service, or a store.",
 	},
 	"region": &graphql.ArgumentConfig{
 		Type: graphql.NewList(enumRegion),
@@ -166,14 +167,16 @@ var locationFieldArguments = relay.NewConnectionArgs(graphql.FieldConfigArgument
 		Type: graphql.NewList(enumCountry),
 	},
 	"openSoon": &graphql.ArgumentConfig{
-		Type: graphql.Boolean,
+		Type:        graphql.Boolean,
+		Description: "Whether or not the location is opening soon.",
 	},
 	"isGallery": &graphql.ArgumentConfig{
 		Type:        graphql.Boolean,
 		Description: "Whether or not the location is a gallery.",
 	},
 	"boundingBox": &graphql.ArgumentConfig{
-		Type: graphql.NewList(graphql.Float),
+		Type:        graphql.NewList(graphql.Float),
+		Description: "The 4 coordinates to make a bounding box in the following order: [North West Latitude, North West Longitude, South East Latitude, South East Longitude]",
 	},
 })
 
@@ -242,11 +245,12 @@ func BuildSchema() (graphql.Schema, error) {
 
 	locationType = graphql.NewObject(graphql.ObjectConfig{
 		Name:        "Location",
-		Description: "A vehicle contains trips and charges",
+		Description: "A location can be a supercharger, standard charger, destination charger, service center, or a store.",
 		Fields: graphql.Fields{
 			"id": relay.GlobalIDField("Location", nil),
 			"address": &graphql.Field{
-				Type: graphql.String,
+				Type:        graphql.String,
+				Description: "The precomputed address for this location including city, state, country, postal code, and region.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					return l.Address, nil
@@ -273,7 +277,8 @@ func BuildSchema() (graphql.Schema, error) {
 				},
 			},
 			"addressNotes": &graphql.Field{
-				Type: graphql.String,
+				Type:        graphql.String,
+				Description: "Helpful human direction to find this location.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					if l.AddressNotes == nil {
@@ -283,7 +288,8 @@ func BuildSchema() (graphql.Schema, error) {
 				},
 			},
 			"amentities": &graphql.Field{
-				Type: graphql.String,
+				Type:        graphql.String,
+				Description: "The HTML representation of amentities provided by this location.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					if l.Amenities == nil {
@@ -292,28 +298,9 @@ func BuildSchema() (graphql.Schema, error) {
 					return *l.Amenities, nil
 				},
 			},
-			"baiduLat": &graphql.Field{
-				Type: graphql.Float,
-				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					l := p.Source.(*location.Location)
-					if l.BaiduGeo == nil {
-						return nil, nil
-					}
-					return l.BaiduGeo.Lat, nil
-				},
-			},
-			"baiduLng": &graphql.Field{
-				Type: graphql.Float,
-				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
-					l := p.Source.(*location.Location)
-					if l.BaiduGeo == nil {
-						return nil, nil
-					}
-					return l.BaiduGeo.Lng, nil
-				},
-			},
 			"chargers": &graphql.Field{
-				Type: graphql.String,
+				Type:        graphql.String,
+				Description: "The HTML representation of the chargers provided by this location.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					if l.Chargers == nil {
@@ -344,7 +331,8 @@ func BuildSchema() (graphql.Schema, error) {
 				},
 			},
 			"destinationChargerLogo": &graphql.Field{
-				Type: graphql.String,
+				Type:        graphql.String,
+				Description: "The URL for the logo of the operators of the destination charger.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					if l.DestinationChargerLogo == nil {
@@ -354,7 +342,8 @@ func BuildSchema() (graphql.Schema, error) {
 				},
 			},
 			"destinationWebsite": &graphql.Field{
-				Type: graphql.String,
+				Type:        graphql.String,
+				Description: "The URL for the operators of the destination charger.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					if l.DestinationWebsite == nil {
@@ -364,7 +353,8 @@ func BuildSchema() (graphql.Schema, error) {
 				},
 			},
 			"directionsLink": &graphql.Field{
-				Type: graphql.String,
+				Type:        graphql.String,
+				Description: "Pre-generated link to the location using Google Maps. Recommended to build your own using provided latitude and longitude fields.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					if l.DirectionsLink == nil {
@@ -374,7 +364,8 @@ func BuildSchema() (graphql.Schema, error) {
 				},
 			},
 			"emails": &graphql.Field{
-				Type: graphql.NewList(emailType),
+				Type:        graphql.NewList(emailType),
+				Description: "The list of e-mail contacts for the location.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					return l.Emails, nil
@@ -388,7 +379,8 @@ func BuildSchema() (graphql.Schema, error) {
 				},
 			},
 			"hours": &graphql.Field{
-				Type: graphql.String,
+				Type:        graphql.String,
+				Description: "The HTML representation of hours of operation for the location.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					if l.Hours == nil {
@@ -398,35 +390,40 @@ func BuildSchema() (graphql.Schema, error) {
 				},
 			},
 			"isGallery": &graphql.Field{
-				Type: graphql.Boolean,
+				Type:        graphql.Boolean,
+				Description: "Whether or not the location is a gallery.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					return bool(l.IsGallery), nil
 				},
 			},
 			"kioskPinX": &graphql.Field{
-				Type: graphql.Int,
+				Type:        graphql.Int,
+				Description: "Unknown what this information serves for.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					return *l.KioskPinX, nil
 				},
 			},
 			"kioskPinY": &graphql.Field{
-				Type: graphql.Int,
+				Type:        graphql.Int,
+				Description: "Unknown what this information serves for.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					return *l.KioskPinY, nil
 				},
 			},
 			"kioskZoomPinX": &graphql.Field{
-				Type: graphql.Int,
+				Type:        graphql.Int,
+				Description: "Unknown what this information serves for.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					return *l.KioskZoomPinX, nil
 				},
 			},
 			"kioskZoomPinY": &graphql.Field{
-				Type: graphql.Int,
+				Type:        graphql.Int,
+				Description: "Unknown what this information serves for.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					return *l.KioskZoomPinY, nil
@@ -447,35 +444,40 @@ func BuildSchema() (graphql.Schema, error) {
 				},
 			},
 			"locationId": &graphql.Field{
-				Type: graphql.String,
+				Type:        graphql.String,
+				Description: "The URL friendly title which is used in the path field.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					return l.LocationID, nil
 				},
 			},
 			"locationType": &graphql.Field{
-				Type: graphql.NewList(graphql.String),
+				Type:        graphql.NewList(graphql.String),
+				Description: "Each location may provide of 1 or many services such as supercharging, standard charging, destination charging, service, or a store.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					return l.LocationType, nil
 				},
 			},
 			"nid": &graphql.Field{
-				Type: graphql.Int,
+				Type:        graphql.Int,
+				Description: "Internal Tesla specific unique identifer for the location.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					return l.Nid, nil
 				},
 			},
 			"openSoon": &graphql.Field{
-				Type: graphql.Boolean,
+				Type:        graphql.Boolean,
+				Description: "Whether or not the location is opening soon.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					return bool(l.OpenSoon), nil
 				},
 			},
 			"path": &graphql.Field{
-				Type: graphql.String,
+				Type:        graphql.String,
+				Description: "The URL path to the location on Tesla's website.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					return l.Path, nil
@@ -492,7 +494,8 @@ func BuildSchema() (graphql.Schema, error) {
 				},
 			},
 			"provinceState": &graphql.Field{
-				Type: graphql.String,
+				Type:        graphql.String,
+				Description: "The ISO ALPHA-2 code of the province.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					if l.ProvinceState == nil {
@@ -502,7 +505,8 @@ func BuildSchema() (graphql.Schema, error) {
 				},
 			},
 			"region": &graphql.Field{
-				Type: graphql.String,
+				Type:        graphql.String,
+				Description: "The geographical region where the location resides in.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					return l.Region, nil
@@ -523,7 +527,8 @@ func BuildSchema() (graphql.Schema, error) {
 				},
 			},
 			"subRegion": &graphql.Field{
-				Type: graphql.String,
+				Type:        graphql.String,
+				Description: "The State for locations in North America, otherwise country for a specific region.",
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					l := p.Source.(*location.Location)
 					if l.SubRegion == nil {
