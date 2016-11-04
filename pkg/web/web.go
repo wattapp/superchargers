@@ -81,6 +81,7 @@ func redirectHTTPS(next echo.HandlerFunc) echo.HandlerFunc {
 		uri := req.URI()
 		proto := req.Header().Get("X-Forwarded-Proto")
 		if proto != "https" {
+			metrics.Incr("http_to_https")
 			return c.Redirect(http.StatusMovedPermanently, "https://"+host+uri)
 		}
 		return next(c)
