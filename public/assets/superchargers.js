@@ -97,8 +97,6 @@ function query(event) {
           .setPopup(popup)
           .addTo(map)
 
-          console.log(marker)
-
           markers.push(marker)
         })
 
