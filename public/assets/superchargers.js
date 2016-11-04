@@ -18,10 +18,10 @@ function buildHTML(location) {
 
   body = ""
   for(item in location) {
-    body += `<li><strong>${item}:</strong> <code>${location[item]}</code></li>`
+    body += "<li><strong>" + item + ":</strong> <code>" + location[item] + "</code></li>"
   }
 
-  return `<ul>${body}</ul>`
+  return "<ul>" + body + "</ul>"
 }
 
 function updateLocationCount(count) {
@@ -30,7 +30,7 @@ function updateLocationCount(count) {
   if(count != 1) {
     suffix += "s"
   }
-  el.innerText = `${count} ${suffix}`
+  el.innerText = count + " " + suffix
 }
 
 function buildElementForLocation(location) {
