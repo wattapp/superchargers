@@ -18,8 +18,10 @@ import (
 )
 
 var (
-	Schema graphql.Schema
-	isDyno = os.Getenv("DYNO") != ""
+	Schema           graphql.Schema
+	isDyno           = os.Getenv("DYNO") != ""
+	encryptChallenge = os.Getenv("LETS_ENCRYPT_CHALLENGE")
+	encryptKey       = os.Getenv("LETS_ENCRYPT_KEY")
 )
 
 func Run() error {
@@ -59,10 +61,9 @@ func Run() error {
 }
 
 func letsEncrypt(c echo.Context) error {
-	challenge := os.Getenv("LETS_ENCRYPT_CHALLENGE")
 	param := c.Param("challenge")
-	if param == challenge {
-		return c.String(http.StatusOK, os.Getenv("LETS_ENCRYPT_KEY"))
+	if param == encryptChallenge {
+		return c.String(http.StatusOK, encryptKey)
 	}
 
 	return errors.New("Let's Encrypt challenge did not match")
