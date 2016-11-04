@@ -21,6 +21,28 @@
       </ul>
     </header>
     <form action="/graphql" method="post">
+      <div class="header">
+        <a href="#" class="toggle">
+          <svg class="octicon octicon-chevron-down" viewBox="0 0 10 16" version="1.1" width="10" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M5 11L0 6l1.5-1.5L5 8.25 8.5 4.5 10 6z"></path></svg>
+        </a>
+        <select name="example">
+          <option>
+            Examples
+          </option>
+          <option value="%7B%0A%20%20locations(region%3A%20EUROPE%2C%20type%3A%20SUPERCHARGER)%20%7B%0A%20%20%20%20edges%20%7B%0A%20%20%20%20%20%20node%20%7B%0A%20%20%20%20%20%20%20%20id%0A%20%20%20%20%20%20%20%20address%0A%20%20%20%20%20%20%20%20latitude%0A%20%20%20%20%20%20%20%20longitude%0A%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20locationType%0A%20%20%20%20%20%20%20%20openSoon%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D">
+            Superchargers in the Europe region
+          </option>
+          <option value="%7B%0A%20%20locations(boundingBox%3A%20%5B42.02238033615207%2C%20-76.4456118%2C%2038.88848331958911%2C%20-83.4768618%5D)%20%7B%0A%20%20%20%20edges%20%7B%0A%20%20%20%20%20%20node%20%7B%0A%20%20%20%20%20%20%20%20id%0A%20%20%20%20%20%20%20%20address%0A%20%20%20%20%20%20%20%20latitude%0A%20%20%20%20%20%20%20%20longitude%0A%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20locationType%0A%20%20%20%20%20%20%20%20openSoon%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D">
+            Locations in a given bounding box
+          </option>
+          <option value="%7B%0A%20%20locations(region%3A%20ASIA_PACIFIC)%20%7B%0A%20%20%20%20edges%20%7B%0A%20%20%20%20%20%20node%20%7B%0A%20%20%20%20%20%20%20%20id%0A%20%20%20%20%20%20%20%20address%0A%20%20%20%20%20%20%20%20latitude%0A%20%20%20%20%20%20%20%20longitude%0A%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20locationType%0A%20%20%20%20%20%20%20%20openSoon%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D">
+            Locations in the Asia Pacific region
+          </option>
+          <option value="%7B%0A%20%20locations(openSoon%3A%20true)%20%7B%0A%20%20%20%20edges%20%7B%0A%20%20%20%20%20%20node%20%7B%0A%20%20%20%20%20%20%20%20id%0A%20%20%20%20%20%20%20%20address%0A%20%20%20%20%20%20%20%20latitude%0A%20%20%20%20%20%20%20%20longitude%0A%20%20%20%20%20%20%20%20title%0A%20%20%20%20%20%20%20%20locationType%0A%20%20%20%20%20%20%20%20openSoon%0A%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%7D%0A%7D">
+            Locations that are opening soon
+          </option>
+        </select>
+      </div>
       <textarea name="query" id="query">{
   locations(region: NORTH_AMERICA, type: [SUPERCHARGER, STORE]) {
     edges {
@@ -36,8 +58,10 @@
     }
   }
 }</textarea>
-      <button type="submit">Submit</button>
-      <span class="location-count" id="location-count">0 locations</span>
+      <div class="footer">
+        <button type="submit">Submit</button>
+        <span class="location-count" id="location-count">0 locations</span>
+      </div>
     </form>
     <div id="map"></div>
     <script>

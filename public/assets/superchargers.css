@@ -4,14 +4,17 @@ body {
   margin: 0;
   padding: 0;
 }
+
 a {
   color: #c00;
   text-decoration: none;
 }
+
 blockquote {
   font-style: italic;
   text-color: #999;
 }
+
 header {
   background: rgba(255, 255, 255, 0.95);
   position: fixed;
@@ -22,36 +25,44 @@ header {
   font-size: 13px;
   border-bottom: 2px solid #c00;
 }
+
 header a {
   color: #000;
 }
+
 header.loading {
   border-bottom: 0;
 }
+
 header h1 {
   float: left;
   margin: 10px 0 0 25px;
 }
+
 header h1 a {
   background-image: url("/assets/logo.png");
   background-size: 32px 32px;
   background-repeat: no-repeat;
   padding-left: 38px;
 }
-header ul {
+
+header > ul {
   margin: 13px 0 0;
   padding: 0;
   float: right;
 }
-header li {
+
+header > ul li {
   float: left;
   list-style: none;
   margin-right: 25px;
   font-weight: bold;
 }
+
 header li a.active {
   color: #c00;
 }
+
 #loader {
   position: fixed;
   z-index: 110;
@@ -60,39 +71,49 @@ header li a.active {
   right: 0;
   height: 2px;
 }
+
 .anchor {
   float: left;
   padding-right: 5px;
   margin-left: -25px;
   line-height: 1;
 }
+
 .marker {
   background-image: url("/assets/icons/store@2x.png");
   background-size: 23px 33px;
   width: 23px;
   height: 33px;
 }
+
 .marker.store.coming-soon {
   background-image: url("/assets/icons/store-comingsoon@2x.png");
 }
+
 .marker.supercharger {
   background-image: url("/assets/icons/supercharger@2x.png");
 }
+
 .marker.supercharger.coming-soon {
   background-image: url("/assets/icons/supercharger-comingsoon@2x.png");
 }
+
 .marker.service {
   background-image: url("/assets/icons/service@2x.png");
 }
+
 .marker.service.coming-soon {
   background-image: url("/assets/icons/service-comingsoon@2x.png");
 }
+
 .marker.charger {
   background-image: url("/assets/icons/charger@2x.png");
 }
+
 .marker.charger.coming-soon {
   background-image: url("/assets/icons/charger-comingsoon@2x.png");
 }
+
 footer {
   background: rgba(0, 0, 0, 0.75);
   border-top: 1px solid rgba(255, 255, 255, 0.25);
@@ -102,47 +123,94 @@ footer {
   width: 100%;
   height: 50px;
 }
+
 #map {
   position: absolute;
   top: 0;
   bottom: 0;
   width: 100%;
 }
+
 form {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 5px;
   position: absolute;
   z-index: 100;
   top: 75px;
   left: 25px;
-  bottom: 75px;
+  bottom: 25px;
   width: 300px;
 }
+
+form.collapsed {
+  bottom: auto;
+  height: 45px;
+}
+
+form.collapsed .toggle {
+  transform: rotate(-90deg);
+  top: 12px;
+  right: 12px;
+}
+
+form .toggle {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+form.collapsed .footer,
+form.collapsed textarea {
+  display: none;
+}
+
+form .header {
+  position: absolute;
+  top: 0;
+  width: 280px;
+  height: 25px;
+  padding: 10px;
+  line-height: 21px;
+}
+
+form .footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+}
+
 form button {
   background: #c00;
-  color: #fff;
   border: 0;
-  border-radius: 5px;
+  color: #fff;
   width: 100px;
   height: 35px;
   margin: 0;
   cursor: pointer;
+  border-radius: 5px;
   text-transform: uppercase;
   font-weight: bold;
   outline: none;
   float: left;
 }
+
 form button:active {
   background: #b90000;
 }
+
 form textarea {
-  background: rgba(255, 255, 255, 0.9);
-  width: 300px;
-  border-radius: 5px;
-  height: 100%;
+  background: none;
+  position: absolute;
+  width: 280px;
+  left: 10px;
+  top: 45px;
+  bottom: 75px;
   border: 0;
   font: 14px/1.5em Consolas, "Liberation Mono", Menlo, Courier, monospace;
   outline: none;
-  overflow-x: scroll;
-  resize: horizontal;
+  resize: none;
+  z-index: 15;
 }
 
 .location-count {
@@ -167,10 +235,6 @@ form textarea {
   user-select: none;
 }
 
-.pace-inactive {
-  display: none;
-}
-
 .pace .pace-progress {
   background: #c00;
   position: fixed;
@@ -182,21 +246,8 @@ form textarea {
   overflow-y: hidden;
 }
 
-.pace .pace-progress-inner {
-  display: block;
-  position: absolute;
-  right: 0px;
-  width: 100px;
-  height: 100%;
-  box-shadow: 0 0 10px #c00, 0 0 5px #c00;
-  opacity: 1.0;
-  -webkit-transform: rotate(3deg) translate(0px, -4px);
-  -moz-transform: rotate(3deg) translate(0px, -4px);
-  -ms-transform: rotate(3deg) translate(0px, -4px);
-  -o-transform: rotate(3deg) translate(0px, -4px);
-  transform: rotate(3deg) translate(0px, -4px);
-}
-
-.pace .pace-activity {
+.pace .pace-progress-inner,
+.pace .pace-activity,
+.pace-inactive {
   display: none;
 }

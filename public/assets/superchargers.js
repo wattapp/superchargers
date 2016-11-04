@@ -58,6 +58,9 @@ function query(event) {
     event.preventDefault()
   }
 
+  // Reset the example select menu
+  this.example.selectedIndex = 0
+
   Pace.start()
   fetch("/graphql", {
     method: "POST",
@@ -158,6 +161,18 @@ window.onload = function() {
   	if(e.keyCode == 13 && e.metaKey) {
   		query.apply(this.form)
   	}
+  })
+
+  form.example.addEventListener('change', function(e) {
+    var index = this.options.selectedIndex
+    if(index) {
+      form.query.value = decodeURIComponent(this.options[index].value)
+    }
+  })
+
+  document.querySelector('form .toggle').addEventListener('click', function(e) {
+    e.preventDefault();
+    form.classList.toggle("collapsed")
   })
 
   // Fetch initial placeholder query data
