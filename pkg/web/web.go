@@ -14,7 +14,10 @@ import (
 	"github.com/labstack/echo/middleware"
 )
 
-var Schema graphql.Schema
+var (
+	Schema graphql.Schema
+	isDyno = os.Getenv("DYNO") != ""
+)
 
 func Run() error {
 	var err error
@@ -61,9 +64,10 @@ func letsEncrypt(c echo.Context) error {
 	return errors.New("Let's Encrypt challenge did not match")
 }
 
+// Heroku specific HTTPS redirect
 func redirectHTTPS(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		if strings.HasPrefix(c.Request().Host(), "localhost") {
+		if !isDyno {
 			return next(c)
 		}
 
@@ -71,8 +75,6 @@ func redirectHTTPS(next echo.HandlerFunc) echo.HandlerFunc {
 		host := req.Host()
 		uri := req.URI()
 		proto := req.Header().Get("X-Forwarded-Proto")
-		fmt.Println(host, uri, req.Scheme(), proto)
-
 		if proto != "https" {
 			return c.Redirect(http.StatusMovedPermanently, "https://"+host+uri)
 		}
