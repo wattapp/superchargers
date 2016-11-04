@@ -25,8 +25,9 @@ func Run() error {
 	e := echo.New()
 
 	// Configure middleware
-	// Heroku has its own logging
-	if os.Getenv("DYNO") == "" {
+	if os.Getenv("DYNO") != "" {
+		e.Pre(middleware.HTTPSWWWRedirect())
+	} else {
 		e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 			Format: "time=${time_rfc3339} method=${method} path=${path} host=${host} status=${status} bytes_in=${bytes_in} bytes_out=${bytes_out}\n",
 		}))
