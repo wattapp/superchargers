@@ -125,24 +125,6 @@ func TestSuperchargerEqualityAmenities(t *testing.T) {
 	assert.False(t, a.Equal(b))
 }
 
-func TestSuperchargerEqualityBaiduGeo(t *testing.T) {
-	a := Supercharger{
-		BaiduGeo: &spatial.Point{
-			Lat: 0.0,
-			Lng: 0.0,
-		},
-	}
-
-	b := Supercharger{
-		BaiduGeo: &spatial.Point{
-			Lat: 0.0,
-			Lng: 0.1,
-		},
-	}
-
-	assert.False(t, a.Equal(b))
-}
-
 func TestSuperchargerEqualityChargers(t *testing.T) {
 	pointer := "1234"
 	a := Supercharger{
