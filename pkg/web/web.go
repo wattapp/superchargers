@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/handler"
@@ -23,15 +24,13 @@ func Run() error {
 	}
 
 	e := echo.New()
-
-	// Configure middleware
-	if os.Getenv("DYNO") != "" {
-		e.Pre(middleware.HTTPSRedirect())
-	} else {
-		e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-			Format: "time=${time_rfc3339} method=${method} path=${path} host=${host} status=${status} bytes_in=${bytes_in} bytes_out=${bytes_out}\n",
-		}))
-	}
+	e.Pre(redirectHTTPS)
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "time=${time_rfc3339} method=${method} path=${path} host=${host} status=${status} bytes_in=${bytes_in} bytes_out=${bytes_out}\n",
+		Skipper: func(c echo.Context) bool {
+			return !strings.HasPrefix(c.Request().Host(), "localhost")
+		},
+	}))
 	e.Use(middleware.Recover())
 	e.Static("/", "public")
 	e.Get("/.well-known/acme-challenge/:challenge", letsEncrypt)
@@ -60,4 +59,20 @@ func letsEncrypt(c echo.Context) error {
 	}
 
 	return errors.New("Let's Encrypt challenge did not match")
+}
+
+func redirectHTTPS(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		if strings.HasPrefix(c.Request().Host(), "localhost") {
+			return next(c)
+		}
+
+		req := c.Request()
+		host := req.Host()
+		uri := req.URI()
+		if !req.IsTLS() {
+			return c.Redirect(http.StatusMovedPermanently, "https://"+host+uri)
+		}
+		return next(c)
+	}
 }
