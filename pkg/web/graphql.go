@@ -168,6 +168,10 @@ var locationFieldArguments = relay.NewConnectionArgs(graphql.FieldConfigArgument
 	"openSoon": &graphql.ArgumentConfig{
 		Type: graphql.Boolean,
 	},
+	"isGallery": &graphql.ArgumentConfig{
+		Type:        graphql.Boolean,
+		Description: "Whether or not the location is a gallery.",
+	},
 	"boundingBox": &graphql.ArgumentConfig{
 		Type: graphql.NewList(graphql.Float),
 	},

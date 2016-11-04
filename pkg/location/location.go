@@ -108,6 +108,10 @@ func Locations(scope database.GraphQLScope) ([]*Location, error) {
 		builder = builder.Where("open_soon = $1", scope.Args["openSoon"])
 	}
 
+	if scope.Args["isGallery"] != nil {
+		builder = builder.Where("is_gallery = $1", scope.Args["isGallery"])
+	}
+
 	bb, ok := scope.Args["boundingBox"].([]interface{})
 	if ok && len(bb) == 4 {
 		nwLat, nwLng, seLat, seLng := bb[0], bb[1], bb[2], bb[3]
