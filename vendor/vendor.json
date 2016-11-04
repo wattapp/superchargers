@@ -138,6 +138,24 @@
 			"revisionTime": "2016-03-09T07:48:35Z"
 		},
 		{
+			"checksumSHA1": "VDlpbh8lu2c+OtaInlqnlyx6550=",
+			"path": "github.com/influxdata/influxdb/client/v2",
+			"revision": "4b85371a71d4382a5e53902d2aac997a0b0733bf",
+			"revisionTime": "2016-11-02T19:28:54Z"
+		},
+		{
+			"checksumSHA1": "F0QWwfaZMoHZ385+EM+82Cg8JPg=",
+			"path": "github.com/influxdata/influxdb/models",
+			"revision": "4b85371a71d4382a5e53902d2aac997a0b0733bf",
+			"revisionTime": "2016-11-02T19:28:54Z"
+		},
+		{
+			"checksumSHA1": "k4DPMyVAqsaoTQX40tP2fb4hDMs=",
+			"path": "github.com/influxdata/influxdb/pkg/escape",
+			"revision": "4b85371a71d4382a5e53902d2aac997a0b0733bf",
+			"revisionTime": "2016-11-02T19:28:54Z"
+		},
+		{
 			"checksumSHA1": "p/qzxBRYGQTr4JKDAN8JxtSv5iU=",
 			"path": "github.com/jmoiron/sqlx",
 			"revision": "5f97679e23f75f42b265fec8d3bdb1c8de90b79d",

@@ -5,13 +5,16 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/handler"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
 	"github.com/labstack/echo/middleware"
+	"github.com/wattapp/superchargers/pkg/metrics"
 )
 
 var (
@@ -28,6 +31,7 @@ func Run() error {
 
 	e := echo.New()
 	e.Pre(redirectHTTPS)
+	e.Use(recordMetrics)
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: "time=${time_rfc3339} method=${method} path=${path} host=${host} status=${status} bytes_in=${bytes_in} bytes_out=${bytes_out}\n",
 		Skipper: func(c echo.Context) bool {
@@ -79,5 +83,40 @@ func redirectHTTPS(next echo.HandlerFunc) echo.HandlerFunc {
 			return c.Redirect(http.StatusMovedPermanently, "https://"+host+uri)
 		}
 		return next(c)
+	}
+}
+
+func recordMetrics(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		req := c.Request()
+		res := c.Response()
+		start := time.Now()
+		if err := next(c); err != nil {
+			c.Error(err)
+		}
+		path := req.URL().Path()
+		if path == "" {
+			path = "/"
+		}
+
+		tags := map[string]string{
+			"path":   path,
+			"host":   req.Host(),
+			"method": req.Method(),
+			"status": strconv.Itoa(res.Status()),
+		}
+
+		fields := map[string]interface{}{
+			"bytes_out": res.Size(),
+			"took":      time.Since(start).Seconds(),
+			"bytes_in":  req.ContentLength(),
+		}
+
+		err := metrics.Write("http_request", tags, fields)
+		if err != nil {
+			// We don't want to return server errors on failure to record metrics
+			fmt.Println(err)
+		}
+		return nil
 	}
 }
