@@ -83,20 +83,20 @@ function query(event) {
           marker.remove();
         });
 
-        var coordinates = json.data.locations.edges.map(function(edge) {
-          return [edge.node.longitude, edge.node.latitude];
+        var coordinates = json.data.locations.map(function(location) {
+          return [location.longitude, location.latitude];
         });
 
         markers = [];
-        json.data.locations.edges.forEach(function(edge) {
-          var el = buildElementForLocation(edge.node);
+        json.data.locations.forEach(function(location) {
+          var el = buildElementForLocation(location);
           var popup = new mapboxgl.Popup({
             offset: [0, -36]
-          }).setHTML(buildHTML(edge.node));
+          }).setHTML(buildHTML(location));
 
           var marker = new mapboxgl.Marker(el, {
             offset: [-12, -33]
-          }).setLngLat([edge.node.longitude, edge.node.latitude])
+          }).setLngLat([location.longitude, location.latitude])
           .setPopup(popup)
           .addTo(map);
 

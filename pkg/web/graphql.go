@@ -550,36 +550,22 @@ func BuildSchema() (graphql.Schema, error) {
 		},
 	})
 
-	locationsConnectionDefinition := relay.ConnectionDefinitions(relay.ConnectionConfig{
-		Name:     "Location",
-		NodeType: locationType,
-	})
-
 	queryType := graphql.NewObject(graphql.ObjectConfig{
 		Name: "Query",
 		Fields: graphql.Fields{
 			"locations": &graphql.Field{
-				Type: locationsConnectionDefinition.ConnectionType,
+				Type: graphql.NewList(locationType),
 				Args: locationFieldArguments,
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					scope := database.NewGraphQLScopeWithFilters(p.Args)
+					scope.Limit = -1
 
-					// Include all results by default
-					if scope.First == -1 && scope.Last == -1 {
-						scope.Limit = -1
-					}
-
-					data := []database.GraphQLCursor{}
 					locations, err := location.Locations(scope)
 					if err != nil {
 						return nil, err
 					}
 
-					for _, l := range locations {
-						data = append(data, l)
-					}
-
-					return database.GraphQLConnection(data, scope), nil
+					return locations, nil
 				},
 			},
 			"node": nodeDefinitions.NodeField,
