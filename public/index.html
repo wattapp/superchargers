@@ -45,7 +45,8 @@
           </option>
         </select>
       </div>
-      <textarea name="query" id="query">{
+      <div class="query">
+        <textarea name="query" id="query">{
   locations(region: NORTH_AMERICA, type: [SUPERCHARGER, STORE]) {
     edges {
       node {
@@ -60,6 +61,7 @@
     }
   }
 }</textarea>
+      </div>
       <div class="footer">
         <button type="submit">Submit</button>
         <span class="location-count" id="location-count">0 locations</span>
