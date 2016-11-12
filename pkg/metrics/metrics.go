@@ -142,7 +142,6 @@ func Stats(interval time.Duration) {
 type NullWriter struct{}
 
 func (nw NullWriter) Write(bp influx.BatchPoints) error {
-	fmt.Println(bp)
 	return nil
 }
 
@@ -153,7 +152,6 @@ func (nw NullWriter) Ping(timeout time.Duration) (time.Duration, string, error) 
 }
 
 func (nw NullWriter) Query(q influx.Query) (*influx.Response, error) {
-	fmt.Println(q)
 	return nil, nil
 }
 
