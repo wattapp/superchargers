@@ -6,10 +6,16 @@
     <meta name="tags" content="tesla,supercharger,destination charger,tesla store,tesla service center,graphql,tesla graphql,tesla api">
     <link rel="icon" type="image/x-icon" href="/favicon.png">
     <link href="/assets/superchargers.css" rel="stylesheet">
-    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.26.0/mapbox-gl.css" rel="stylesheet">
-    <script>window.Promise || document.write('<script src="/assets/es6-promise.min.js">\x3C/script>')</script>
-    <script>window.fetch || document.write('<script src="//cdn.jsdelivr.net/fetch/0.9.0/fetch.min.js">\x3C/script>')</script>
-    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.26.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v0.27.0/mapbox-gl.css" rel="stylesheet">
+
+    <!-- Polyfills - mainly for IE10+ -->
+    <script>window.Promise || document.write('<script src="/assets/polyfills/es6-promise.min.js">\x3C/script>');</script>
+    <script>window.fetch || document.write('<script src="//cdn.jsdelivr.net/fetch/0.9.0/fetch.min.js">\x3C/script>');</script>
+    <script>Array.prototype.includes || document.write('<script src="/assets/polyfills/array.includes.min.js">\x3C/script>');</script>
+    <script>String.codePointAt || document.write('<script src="/assets/polyfills/string.codepointat.min.js">\x3C/script>');</script>
+    <script>String.fromCodePoint || document.write('<script src="/assets/polyfills/string.fromcodepoint.min.js">\x3C/script>');</script>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v0.27.0/mapbox-gl.js"></script>
     <script src="/assets/pace.js"></script>
     <script src="/assets/superchargers.js"></script>
   </head>
