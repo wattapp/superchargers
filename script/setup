@@ -46,10 +46,12 @@ fi
 echo "Fetching required packages"
 go get -u github.com/kardianos/govendor
 go get -u bitbucket.org/liamstask/goose/cmd/goose
-
 govendor sync
 
 sed -i '' "s/dewski/$(whoami)/g" .env
+
+echo "Migrating the database"
+script/migrate &>/dev/null
 
 echo "Superchargers.io is ready to go, run:"
 echo "script/server"
