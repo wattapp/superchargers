@@ -1,0 +1,55 @@
+#!/bin/bash
+set -e
+
+echo "Checking for dependencies"
+brew list go &>/dev/null
+if [ $? -eq 1 ]; then
+  echo "You do not have go installed, run:"
+  echo "brew install go"
+  exit 1
+fi
+
+brew list postgres &>/dev/null
+if [ $? -eq 1 ]; then
+  echo "You do not have postgres installed, run:"
+  echo "brew install postgres"
+  exit 1
+fi
+
+brew list postgis &>/dev/null
+if [ $? -eq 1 ]; then
+  echo "You do not have postgis installed, run:"
+  echo "brew install postgis"
+  exit 1
+fi
+
+brew services list |grep postgres &>/dev/null
+if [ $? -eq 1 ]; then
+  echo "Starting postgres"
+  brew services start postgres
+fi
+
+psql -lqt | cut -d \| -f 1 | grep -qw superchargers
+if [ $? -eq 1 ]; then
+  echo "You do not have superchargers database created, run:"
+  echo "createdb superchargers"
+  exit 1
+fi
+
+grep -q GOPATH ~/.profile &>/dev/null
+if [ $? -eq 1 ]; then
+  echo "You need to add GOPATH to your ~/.profile, run:"
+  echo "echo \"export GOPATH=$HOME/go\" >> ~/.profile"
+  exit 1
+fi
+
+echo "Fetching required packages"
+go get -u github.com/kardianos/govendor
+go get -u bitbucket.org/liamstask/goose/cmd/goose
+
+govendor sync
+
+sed -i '' "s/dewski/$(whoami)/g" .env
+
+echo "Superchargers.io is ready to go, run:"
+echo "script/server"

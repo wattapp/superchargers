@@ -4,6 +4,24 @@
 
 The GraphQL API for finding Tesla Superchargers, destination chargers, stores, and service centers.
 
+## Setup
+
+To run Superchargers.io locally just pull down the project:
+
+```sh
+go get -u github.com/wattapp/superchargers
+```
+
+Run `script/setup`:
+
+```sh
+$ script/setup
+Checking for dependencies
+Fetching required packages
+Superchargers.io is ready to go, run:
+script/server
+```
+
 ## What is Superchargers.io?
 
 Superchargers.io is a GraphQL API to progmatically find Tesla Stores, Superchargers, Destination Chargers, and Service centers.
