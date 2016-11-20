@@ -129,47 +129,47 @@
 
       var defaultQuery = `query {
   locations {
-    edges {
-      location:node {
-        id
-        address
-        addressLine1
-        addressLine2
-        addressNotes
-        amentities
-        baiduLat
-        baiduLng
-        chargers
-        city
-        commonName
-        country
-        destinationChargerLogo
-        destinationWebsite
-        directionsLink
-        emails
-        geocode
-        hours
-        isGallery
-        kioskPinX
-        kioskPinY
-        kioskZoomPinX
-        kioskZoomPinY
-        latitude
-        longitude
-        locationId
-        locationType
-        nid
-        openSoon
-        path
-        postalCode
-        provinceState
-        region
-        salesPhone
-        salesRepresentative
-        subRegion
-        title
-      }
+    id
+    address
+    addressLine1
+    addressLine2
+    addressNotes
+    amentities
+    chargers
+    city
+    commonName
+    country
+    destinationChargerLogo
+    destinationWebsite
+    directionsLink
+    emails {
+      label
+      email
     }
+    geocode
+    hours
+    isGallery
+    kioskPinX
+    kioskPinY
+    kioskZoomPinX
+    kioskZoomPinY
+    latitude
+    longitude
+    locationId
+    locationType
+    nid
+    openSoon
+    path
+    postalCode
+    provinceState
+    region
+    salesPhone {
+      label
+      number
+    }
+    salesRepresentative
+    subRegion
+    title
   }
 }`
 
