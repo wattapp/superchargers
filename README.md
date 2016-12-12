@@ -1,6 +1,6 @@
 # Superchargers.io
 
-![](https://travis-ci.org/wattapp/superchargers.svg?branch=master)
+![](https://travis-ci.org/wattapp/superchargers.svg?branch=master) [![](https://godoc.org/github.com/wattapp/superchargers?status.svg)](http://godoc.org/github.com/wattapp/superchargers)
 
 The GraphQL API for finding Tesla Superchargers, destination chargers, stores, and service centers.
 
