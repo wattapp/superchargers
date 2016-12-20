@@ -3,6 +3,7 @@ package location
 import (
 	"database/sql"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -73,6 +74,42 @@ func GetLocation(locationID int64) (*Location, error) {
 	}
 
 	return location, nil
+}
+
+func LocationsNear(scope database.GraphQLScope) ([]*Location, error) {
+	lat, ok := scope.Args["latitude"].(float64)
+	if !ok {
+		return nil, errors.New("Invalid latitude")
+	}
+
+	lng, ok := scope.Args["longitude"].(float64)
+	if !ok {
+		return nil, errors.New("Invalid longitude")
+	}
+
+	point := spatial.Point{
+		Lat: lat,
+		Lng: lng,
+	}
+
+	locations := []*Location{}
+	builder := database.Conn().
+		Select("*").
+		From("locations").
+		OrderBy("geo <-> $1::geometry", point)
+
+	if scope.ConnectionArguments.First != -1 {
+		builder = builder.Limit(uint64(scope.ConnectionArguments.First))
+	} else {
+		builder = builder.Limit(uint64(database.DefaultLimit))
+	}
+
+	err := builder.QueryStructs(&locations)
+	if err != nil {
+		return nil, err
+	}
+
+	return locations, nil
 }
 
 func Locations(scope database.GraphQLScope) ([]*Location, error) {

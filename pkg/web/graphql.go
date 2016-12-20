@@ -568,6 +568,30 @@ func BuildSchema() (graphql.Schema, error) {
 					return locations, nil
 				},
 			},
+			"near": &graphql.Field{
+				Type: graphql.NewList(locationType),
+				Args: relay.NewConnectionArgs(graphql.FieldConfigArgument{
+					"latitude": &graphql.ArgumentConfig{
+						Type:        graphql.NewNonNull(graphql.Float),
+						Description: "The latitude of the coordinate.",
+					},
+					"longitude": &graphql.ArgumentConfig{
+						Type:        graphql.NewNonNull(graphql.Float),
+						Description: "The longitude of the coordinate.",
+					},
+				}),
+				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+					scope := database.NewGraphQLScopeWithFilters(p.Args)
+					scope.Limit = -1
+
+					locations, err := location.LocationsNear(scope)
+					if err != nil {
+						return nil, err
+					}
+
+					return locations, nil
+				},
+			},
 			"node": nodeDefinitions.NodeField,
 		},
 	})
