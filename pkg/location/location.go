@@ -76,7 +76,7 @@ func GetLocation(locationID int64) (*Location, error) {
 	return location, nil
 }
 
-func LocationsNear(scope database.GraphQLScope) ([]*Location, error) {
+func Near(scope database.GraphQLScope) ([]*Location, error) {
 	lat, ok := scope.Args["latitude"].(float64)
 	if !ok {
 		return nil, errors.New("Invalid latitude")

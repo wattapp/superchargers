@@ -584,7 +584,7 @@ func BuildSchema() (graphql.Schema, error) {
 					scope := database.NewGraphQLScopeWithFilters(p.Args)
 					scope.Limit = -1
 
-					locations, err := location.LocationsNear(scope)
+					locations, err := location.Near(scope)
 					if err != nil {
 						return nil, err
 					}
