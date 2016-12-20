@@ -98,6 +98,20 @@ func Near(scope database.GraphQLScope) ([]*Location, error) {
 		From("locations").
 		OrderBy("geo <-> $1::geometry", point)
 
+	if scope.Args["type"] != nil {
+		var types []string
+		for _, t := range scope.Args["type"].([]interface{}) {
+			types = append(types, t.(string))
+		}
+
+		if len(types) > 0 {
+			builder = builder.
+				SetIsInterpolated(false).
+				Where(fmt.Sprintf("location_type ?| array['%s']", strings.Join(types, "','"))).
+				SetIsInterpolated(true)
+		}
+	}
+
 	if scope.ConnectionArguments.First != -1 {
 		builder = builder.Limit(uint64(scope.ConnectionArguments.First))
 	} else {

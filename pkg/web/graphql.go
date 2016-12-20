@@ -579,6 +579,10 @@ func BuildSchema() (graphql.Schema, error) {
 						Type:        graphql.NewNonNull(graphql.Float),
 						Description: "The longitude of the coordinate.",
 					},
+					"type": &graphql.ArgumentConfig{
+						Type:        graphql.NewList(enumLocationType),
+						Description: "Each location may provide of 1 or many services such as supercharging, standard charging, destination charging, service, or a store.",
+					},
 				}),
 				Resolve: func(p graphql.ResolveParams) (interface{}, error) {
 					scope := database.NewGraphQLScopeWithFilters(p.Args)
