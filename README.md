@@ -24,7 +24,7 @@ script/server
 
 ## What is Superchargers.io?
 
-Superchargers.io is a GraphQL API to progmatically find Tesla Stores, Superchargers, Destination Chargers, and Service centers.
+Superchargers.io is a GraphQL API to programmatically find Tesla Stores, Superchargers, Destination Chargers, and Service centers.
 
 You can filter locations by specific countries, regions, [bounding box](http://wiki.openstreetmap.org/wiki/Bounding_Box), or whether or not the location is open for use.
 
