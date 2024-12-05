@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/graphql-go/relay"
-	"gopkg.in/mgutz/dat.v1"
+	"github.com/rs/zerolog"
 )
 
 const OrderOnCreatedAt = "created_at"

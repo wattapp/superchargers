@@ -6,8 +6,8 @@ import (
 	"time"
 
 	_ "github.com/lib/pq"
-	"gopkg.in/mgutz/dat.v1"
-	"gopkg.in/mgutz/dat.v1/sqlx-runner"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/sqlx-runner"
 )
 
 var db runner.Connection

@@ -12,7 +12,7 @@ import (
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/handler"
 	"github.com/labstack/echo"
-	"github.com/labstack/echo/engine/standard"
+	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/middleware"
 	"github.com/wattapp/superchargers/pkg/metrics"
 )
